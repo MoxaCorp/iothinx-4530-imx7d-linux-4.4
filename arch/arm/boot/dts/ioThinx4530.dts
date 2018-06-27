@@ -312,26 +312,6 @@
 
 };
 
-&i2c3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_i2c3>;
-	status = "okay";
-};
-
-&i2c4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_i2c4>;
-	status = "okay";
-
-	codec: wm8960@1a {
-		compatible = "wlf,wm8960";
-		reg = <0x1a>;
-		clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_CLK>;
-		clock-names = "mclk";
-		wlf,shared-lrclk;
-	};
-};
-
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
@@ -434,15 +414,15 @@
 
 
 	};
-/*
+
 	watchdog: watchdog {
-		compatible = "linux,wdt-gpio";
-		gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
-		hw_algo = "toggle";
-		hw_margin_ms = <1000>;
-		always-running = "on";
-	};
-*/
+                compatible = "linux,wdt-gpio";
+                gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
+                hw_algo = "toggle";
+                hw_margin_ms = <1000>;
+                always-running;
+        };
+
         all_gpio {
                 status = "okay";
                 pinctrl-names = "default";
@@ -453,7 +433,6 @@
 			<&pinctrl_serial3in1_gpio>;
         };
 };
-
 
 &iomuxc {
 	pinctrl-names = "default";
@@ -703,4 +682,12 @@
 		};
 
 	};
+};
+
+&iomuxc_lpsr {
+        pinctrl_wdog: wdoggrp {
+                fsl,pins = <
+                        MX7D_PAD_GPIO1_IO00__GPIO1_IO0             0x14
+                >;
+        };
 };
