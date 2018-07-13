@@ -132,13 +132,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet1>;
 
-	clocks = <&clks IMX7D_ENET1_REF_ROOT_CLK>,
+	clocks = <&clks IMX7D_ENET_AXI_ROOT_CLK>,
 		<&clks IMX7D_ENET_AXI_ROOT_CLK>,
 		<&clks IMX7D_ENET1_TIME_ROOT_CLK>,
-		<&clks IMX7D_PLL_ENET_MAIN_50M_CLK>,
-		<&clks IMX7D_ENET1_REF_ROOT_CLK>;
+		<&clks IMX7D_PLL_ENET_MAIN_50M_CLK>;
 	clock-names = "ipg", "ahb", "ptp",
-		"enet_clk_ref","no_enet_out";
+		"enet_clk_ref";
 
 	assigned-clocks = <&clks IMX7D_ENET1_TIME_ROOT_SRC>,
 			<&clks IMX7D_ENET1_TIME_ROOT_CLK>;
@@ -165,13 +164,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet2>;
 
-	clocks = <&clks IMX7D_ENET2_REF_ROOT_CLK>,
+	clocks = <&clks IMX7D_ENET_AXI_ROOT_CLK>,
 		<&clks IMX7D_ENET_AXI_ROOT_CLK>,
 		<&clks IMX7D_ENET2_TIME_ROOT_CLK>,
-		<&clks IMX7D_PLL_ENET_MAIN_50M_CLK>,
-		<&clks IMX7D_ENET2_REF_ROOT_CLK>;
+		<&clks IMX7D_PLL_ENET_MAIN_50M_CLK>;
 	clock-names = "ipg", "ahb", "ptp",
-		"enet_clk_ref","no_enet_out";
+		"enet_clk_ref";
 
 	assigned-clocks = <&clks IMX7D_ENET2_TIME_ROOT_SRC>,
 			<&clks IMX7D_ENET2_TIME_ROOT_CLK>;
@@ -365,6 +363,10 @@
 	assigned-clocks = <&clks IMX7D_UART6_ROOT_SRC>;
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
+
+	rts-gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+	out1-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+	fsl,uart-has-rtscts;
 };
 
 &uart7 {//824 RX/TX
@@ -420,6 +422,20 @@
                 gpios = <31 GPIO_ACTIVE_HIGH>;
                 output-high;
                 line-name = "hold-cs1";
+        };
+
+	line_hold_P1_Enable {
+                gpio-hog;
+                gpios = <18 GPIO_ACTIVE_HIGH>;
+                output-low;
+                line-name = "hold-p1enable";
+        };
+
+	line_hold_P2_Enable0 {
+                gpio-hog;
+                gpios = <27 GPIO_ACTIVE_HIGH>;
+                output-high;
+                line-name = "hold-p2enable0";
         };
 };
 

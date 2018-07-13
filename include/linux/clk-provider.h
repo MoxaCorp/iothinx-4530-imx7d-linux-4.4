@@ -31,6 +31,10 @@
 #define CLK_SET_RATE_NO_REPARENT BIT(7) /* don't re-parent on rate change */
 #define CLK_GET_ACCURACY_NOCACHE BIT(8) /* do not use the cached clk accuracy */
 #define CLK_RECALC_NEW_RATES	BIT(9) /* recalc rates after notifications */
+#define CLK_SET_RATE_UNGATE	BIT(10) /* clock needs to run to set rate */
+#define CLK_IS_CRITICAL		BIT(11) /* do not gate, ever */
+/* parents need enable during gate/ungate, set rate and re-parent */
+#define CLK_OPS_PARENT_ENABLE	BIT(12)
 
 struct clk;
 struct clk_hw;
@@ -313,6 +317,8 @@ struct clk_gate {
 	spinlock_t	*lock;
 };
 
+#define to_clk_gate(_hw) container_of(_hw, struct clk_gate, hw)
+
 #define CLK_GATE_SET_TO_DISABLE		BIT(0)
 #define CLK_GATE_HIWORD_MASK		BIT(1)
 
@@ -374,6 +380,7 @@ struct clk_divider {
 	const struct clk_div_table	*table;
 	spinlock_t	*lock;
 };
+#define to_clk_divider(_hw) container_of(_hw, struct clk_divider, hw)
 
 #define CLK_DIVIDER_ONE_BASED		BIT(0)
 #define CLK_DIVIDER_POWER_OF_TWO	BIT(1)
@@ -439,6 +446,8 @@ struct clk_mux {
 	u8		flags;
 	spinlock_t	*lock;
 };
+
+#define to_clk_mux(_hw) container_of(_hw, struct clk_mux, hw)
 
 #define CLK_MUX_INDEX_ONE		BIT(0)
 #define CLK_MUX_INDEX_BIT		BIT(1)
