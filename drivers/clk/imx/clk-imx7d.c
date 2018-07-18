@@ -19,6 +19,7 @@
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
 #include <linux/types.h>
+#include <soc/imx/src.h>
 
 #include "clk.h"
 
@@ -885,6 +886,10 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
 	for (i = 0; i < ARRAY_SIZE(clks_init_on); i++)
 		clk_prepare_enable(clks[clks_init_on[i]]);
 
+	//if (imx_src_is_m4_enabled()) {
+		clk_set_parent(clks[IMX7D_ARM_M4_ROOT_SRC], clks[IMX7D_PLL_SYS_MAIN_240M_CLK]);
+		clk_prepare_enable(clks[IMX7D_ARM_M4_ROOT_CLK]);
+	//}
 	clk_set_parent(clks[IMX7D_PLL_ARM_MAIN_BYPASS], clks[IMX7D_PLL_ARM_MAIN]);
 	clk_set_parent(clks[IMX7D_PLL_DRAM_MAIN_BYPASS], clks[IMX7D_PLL_DRAM_MAIN]);
 	clk_set_parent(clks[IMX7D_PLL_SYS_MAIN_BYPASS], clks[IMX7D_PLL_SYS_MAIN]);

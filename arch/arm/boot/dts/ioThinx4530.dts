@@ -332,7 +332,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 };
-
+/*
 &uart2 {//MR
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
@@ -340,6 +340,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 };
+*/
 
 &uart3 {//ML
 	pinctrl-names = "default";
@@ -441,6 +442,11 @@
 
 
 / {
+	m4_tcm: tcml@007f8000 {
+		compatible = "fsl, m4_tcml";
+		reg = <0x007f8000 0x8000>;
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-0 = <&pinctrl_leds>;

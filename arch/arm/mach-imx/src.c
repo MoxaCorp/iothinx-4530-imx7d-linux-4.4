@@ -18,6 +18,7 @@
 #include <linux/smp.h>
 #include <asm/smp_plat.h>
 #include "common.h"
+#include "hardware.h"
 
 #define SRC_SCR				0x000
 #define SRC_GPR1			0x020
@@ -29,9 +30,18 @@
 #define BP_SRC_SCR_SW_IPU2_RST		12
 #define BP_SRC_SCR_CORE1_RST		14
 #define BP_SRC_SCR_CORE1_ENABLE		22
+/* below is for i.MX7D */
+#define SRC_GPR1_V2			0x074
+#define SRC_A7RCR0			0x004
+#define SRC_A7RCR1			0x008
+#define SRC_M4RCR			0x00C
+
+#define BP_SRC_A7RCR0_A7_CORE_RESET0   0
+#define BP_SRC_A7RCR1_A7_CORE1_ENABLE  1
 
 static void __iomem *src_base;
 static DEFINE_SPINLOCK(scr_lock);
+static bool m4_is_enabled;
 
 static const int sw_reset_bits[5] = {
 	BP_SRC_SCR_SW_GPU_RST,
@@ -40,6 +50,11 @@ static const int sw_reset_bits[5] = {
 	BP_SRC_SCR_SW_OPEN_VG_RST,
 	BP_SRC_SCR_SW_IPU2_RST
 };
+
+bool imx_src_is_m4_enabled(void)
+{
+	return m4_is_enabled;
+}
 
 static int imx_src_reset_module(struct reset_controller_dev *rcdev,
 		unsigned long sw_reset_idx)
@@ -125,6 +140,15 @@ void __init imx_src_init(void)
 		return;
 	src_base = of_iomap(np, 0);
 	WARN_ON(!src_base);
+
+	if (cpu_is_imx7d()) {
+		val = readl_relaxed(src_base + SRC_M4RCR);
+		if (((val & BIT(3)) == BIT(3)) && !(val & BIT(0)))
+			m4_is_enabled = true;
+		else
+			m4_is_enabled = false;
+		return;
+	}
 
 	imx_reset_controller.of_node = np;
 	if (IS_ENABLED(CONFIG_RESET_CONTROLLER))
