@@ -3,7 +3,12 @@
 #
 
 obj-$(CONFIG_FEC) += fec.o
-fec-objs :=fec_main.o fec_ptp.o mv88e6071.o
+fec-objs :=fec_main.o fec_ptp.o 
+
+ifeq ($(CONFIG_MACH_MOXA_IOTHINX4530),y)
+fec-objs += mv88e6071.o
+endif
+
 obj-$(CONFIG_FEC_MPC52xx) += fec_mpc52xx.o
 ifeq ($(CONFIG_FEC_MPC52xx_MDIO),y)
 	obj-$(CONFIG_FEC_MPC52xx) += fec_mpc52xx_phy.o

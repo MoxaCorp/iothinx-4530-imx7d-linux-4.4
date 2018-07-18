@@ -574,6 +574,11 @@ config SOC_LS1021A
 	help
 	  This enables support for Freescale LS1021A processor.
 
+config MACH_MOXA_IOTHINX4530
+	bool "Moxa ioThinx4530 support"
+	select SOC_IMX7D
+	help
+	  This enables support for moxa ioThinx4530 platform.
 endif
 
 comment "Cortex-A/Cortex-M asymmetric multiprocessing platforms"

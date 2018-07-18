@@ -1922,7 +1922,7 @@ static int fec_enet_mii_probe(struct net_device *ndev)
 	int dev_id = fep->dev_id;
 
 	fep->phy_dev = NULL;
-#if 1 //FIXME
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
 	extern int mv88e6071_init(struct mii_bus *);
 	mv88e6071_init(fep->mii_bus);
 #endif
