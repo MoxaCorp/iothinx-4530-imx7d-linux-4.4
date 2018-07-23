@@ -44,6 +44,8 @@
 #include <linux/platform_data/serial-imx.h>
 #include <linux/platform_data/dma-imx.h>
 
+#include "serial_mctrl_gpio.h"
+
 /* Register definitions */
 #define URXD0 0x0  /* Receiver Register */
 #define URTX0 0x40 /* Transmitter Register */
@@ -90,6 +92,8 @@
 #define UCR1_UARTEN	(1<<0)	/* UART enabled */
 #define UCR2_ESCI	(1<<15)	/* Escape seq interrupt enable */
 #define UCR2_IRTS	(1<<14)	/* Ignore RTS pin */
+#define UCR2_CTSC	(1<<13)	/* CTS pin control */
+#define UCR2_CTS	(1<<12)	/* Clear to send */
 #define UCR2_CTSC	(1<<13)	/* CTS pin control */
 #define UCR2_CTS	(1<<12)	/* Clear to send */
 #define UCR2_ESCEN	(1<<11)	/* Escape enable */
@@ -180,6 +184,15 @@
 
 #define UART_NR 8
 
+#define MOXA                    0x400
+#define MOXA_SET_OP_MODE        (MOXA + 66)
+#define MOXA_GET_OP_MODE        (MOXA + 67)
+
+#define RS232_MODE              0
+#define RS485_2WIRE_MODE        1
+#define RS422_MODE              2
+#define RS485_4WIRE_MODE        3
+
 /* i.MX21 type uart runs on all i.mx except i.MX1 and i.MX6q */
 enum imx_uart_type {
 	IMX1_UART,
@@ -198,6 +211,7 @@ struct imx_port {
 	struct timer_list	timer;
 	unsigned int		old_status;
 	unsigned int		have_rtscts:1;
+	unsigned int		have_rtsgpio:1;
 	unsigned int		dte_mode:1;
 	unsigned int		irda_inv_rx:1;
 	unsigned int		irda_inv_tx:1;
@@ -205,6 +219,15 @@ struct imx_port {
 	struct clk		*clk_ipg;
 	struct clk		*clk_per;
 	const struct imx_uart_data *devdata;
+
+	struct mctrl_gpios *gpios;
+
+	/* shadow registers */
+	unsigned int ucr1;
+	unsigned int ucr2;
+	unsigned int ucr3;
+	unsigned int ucr4;
+	unsigned int ufcr;
 
 	/* DMA fields */
 	unsigned int		dma_is_inited:1;
@@ -219,6 +242,12 @@ struct imx_port {
 	wait_queue_head_t	dma_wait;
 	unsigned int            saved_reg[10];
 	bool			context_saved;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	/* RS232/422/485*/
+	unsigned int 		have_multimode;
+	unsigned int 		mode;
+	unsigned int 		rs485_p1;
+#endif
 };
 
 struct imx_port_ucrs {
@@ -308,6 +337,86 @@ static void imx_port_ucrs_restore(struct uart_port *port,
 }
 #endif
 
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+#define IOTHINX4530_P1_232_EN  TIOCM_OUT1
+#define IOTHINX4530_P1_485_EN0 TIOCM_OUT2
+#define IOTHINX4530_P1_485_EN1 TIOCM_OUT3
+#define IOTHINX4530_P1_485_EN2 TIOCM_OUT4
+#define IOTHINX4530_P2_485_EN0 TIOCM_OUT5
+#define IOTHINX4530_P2_485_EN1 TIOCM_OUT6
+
+static int imx_rs485_config(struct uart_port *port,struct serial_rs485 *rs485conf);
+
+static void imx_moxa_ioThinx4530_uart_rs232_mode(struct imx_port *sport)
+{
+	printk("ttymxc%d change mod to RS232\r\n",sport->port.line);
+
+	sport->port.mctrl |= IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P2_485_EN1;
+	sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN1 | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0);
+	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+}
+
+static void imx_moxa_ioThinx4530_uart_rs422_mode(struct imx_port *sport)
+{
+	printk("ttymxc%d change mod to RS422\r\n",sport->port.line);
+
+	sport->port.mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
+	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0 | IOTHINX4530_P2_485_EN1);
+	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+}
+
+static void imx_moxa_ioThinx4530_uart_rs485_mode(struct imx_port *sport)
+{
+	struct uart_port *port = (struct uart_port *) sport;
+	printk("ttymxc%d change mod to RS485\r\n",port->line);
+
+	sport->port.mctrl |= IOTHINX4530_P2_485_EN0;
+	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1
+					| IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1);
+	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+
+	port->rs485.flags |= SER_RS485_ENABLED;
+	imx_rs485_config(port,&(port->rs485));
+}
+#endif
+
+static void imx_uart_rts_active(struct imx_port *sport, u32 *ucr2)
+{
+	*ucr2 &= ~(UCR2_CTSC | UCR2_CTS);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(sport->rs485_p1)
+		sport->port.mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
+	else
+		sport->port.mctrl |= IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1;
+#else
+	sport->port.mctrl |= TIOCM_RTS;
+#endif
+	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+}
+
+static void imx_uart_rts_inactive(struct imx_port *sport, u32 *ucr2)
+{
+	*ucr2 &= ~UCR2_CTSC;
+	*ucr2 |= UCR2_CTS;
+
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(sport->rs485_p1)
+		sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1);
+	else
+		sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1);
+#else
+	sport->port.mctrl &= ~(TIOCM_RTS);
+#endif
+	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+}
+
+#if 0
+static void imx_uart_rts_auto(struct imx_port *sport, u32 *ucr2)
+{
+	*ucr2 |= UCR2_CTSC;
+}
+#endif
+
 /*
  * Handle any change of modem status signal since we were last called.
  */
@@ -374,12 +483,12 @@ static void imx_stop_tx(struct uart_port *port)
 	/* in rs485 mode disable transmitter if shifter is empty */
 	if (port->rs485.flags & SER_RS485_ENABLED &&
 	    readl(port->membase + USR2) & USR2_TXDC) {
-		temp = readl(port->membase + UCR2);
+		u32 ucr2 = readl(port->membase + UCR2);
 		if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
-			temp &= ~UCR2_CTS;
+			imx_uart_rts_active(sport, &ucr2);
 		else
-			temp |= UCR2_CTS;
-		writel(temp, port->membase + UCR2);
+			imx_uart_rts_inactive(sport, &ucr2);
+		writel(ucr2, port->membase + UCR2);
 
 		temp = readl(port->membase + UCR4);
 		temp &= ~UCR4_TCEN;
@@ -579,13 +688,15 @@ static void imx_start_tx(struct uart_port *port)
 	unsigned long temp;
 
 	if (port->rs485.flags & SER_RS485_ENABLED) {
+		u32 ucr2;
+
 		/* enable transmitter and shifter empty irq */
-		temp = readl(port->membase + UCR2);
+		ucr2 = readl(port->membase + UCR2);
 		if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
-			temp &= ~UCR2_CTS;
+			imx_uart_rts_active(sport, &ucr2);
 		else
-			temp |= UCR2_CTS;
-		writel(temp, port->membase + UCR2);
+			imx_uart_rts_inactive(sport, &ucr2);
+		writel(ucr2, port->membase + UCR2);
 
 		temp = readl(port->membase + UCR4);
 		temp |= UCR4_TCEN;
@@ -1178,6 +1289,10 @@ static int imx_startup(struct uart_port *port)
 	imx_enable_ms(&sport->port);
 	spin_unlock_irqrestore(&sport->port.lock, flags);
 
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(sport->have_multimode)
+		imx_moxa_ioThinx4530_uart_rs232_mode(sport);
+#endif
 	return 0;
 }
 
@@ -1317,17 +1432,23 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 				 */
 				if (!(port->rs485.flags &
 				      SER_RS485_RTS_AFTER_SEND))
-					ucr2 |= UCR2_CTS;
+					imx_uart_rts_inactive(sport, &ucr2);
+				else
+					imx_uart_rts_active(sport, &ucr2);
 			} else {
 				ucr2 |= UCR2_CTSC;
 			}
 		} else {
 			termios->c_cflag &= ~CRTSCTS;
 		}
-	} else if (port->rs485.flags & SER_RS485_ENABLED)
+	} else if (port->rs485.flags & SER_RS485_ENABLED){
 		/* disable transmitter */
 		if (!(port->rs485.flags & SER_RS485_RTS_AFTER_SEND))
-			ucr2 |= UCR2_CTS;
+			imx_uart_rts_inactive(sport, &ucr2);
+		else
+			imx_uart_rts_active(sport, &ucr2);
+
+	}
 
 	if (termios->c_cflag & CSTOPB)
 		ucr2 |= UCR2_STPB;
@@ -1553,33 +1674,76 @@ static int imx_rs485_config(struct uart_port *port,
 			    struct serial_rs485 *rs485conf)
 {
 	struct imx_port *sport = (struct imx_port *)port;
+	u32 ucr2;
 
 	/* unimplemented */
 	rs485conf->delay_rts_before_send = 0;
 	rs485conf->delay_rts_after_send = 0;
 	rs485conf->flags |= SER_RS485_RX_DURING_TX;
-
 	/* RTS is required to control the transmitter */
-	if (!sport->have_rtscts)
+	if (!sport->have_rtscts && !sport->have_rtsgpio)
 		rs485conf->flags &= ~SER_RS485_ENABLED;
-
 	if (rs485conf->flags & SER_RS485_ENABLED) {
-		unsigned long temp;
+		//unsigned long temp;
 
 		/* disable transmitter */
-		temp = readl(sport->port.membase + UCR2);
-		temp &= ~UCR2_CTSC;
+		ucr2 = readl(sport->port.membase + UCR2);
+		ucr2 &= ~UCR2_CTSC;
 		if (rs485conf->flags & SER_RS485_RTS_AFTER_SEND)
-			temp &= ~UCR2_CTS;
+			imx_uart_rts_active(sport, &ucr2);
 		else
-			temp |= UCR2_CTS;
-		writel(temp, sport->port.membase + UCR2);
+			imx_uart_rts_inactive(sport, &ucr2);
+		writel(ucr2, sport->port.membase + UCR2);
 	}
 
 	port->rs485 = *rs485conf;
 
 	return 0;
 }
+
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg)
+{
+	struct imx_port *sport = (struct imx_port *)port;
+	void __user *argp = (void __user *)arg;
+
+	if(!sport->have_multimode)
+		return -ENOIOCTLCMD;
+
+	if (cmd == MOXA_SET_OP_MODE || cmd == MOXA_GET_OP_MODE) {
+                unsigned long opmode;
+
+                if (cmd == MOXA_SET_OP_MODE) {
+
+                        if (get_user(opmode, (int __user *) argp))
+                                return -EFAULT;
+                        if (opmode != RS232_MODE &&
+                                        opmode != RS485_2WIRE_MODE &&
+                                        opmode != RS422_MODE &&
+                                        opmode != RS485_4WIRE_MODE)
+                                return -EFAULT;
+			sport->mode = opmode;
+			switch(opmode)
+			{
+			case RS485_2WIRE_MODE:
+				imx_moxa_ioThinx4530_uart_rs485_mode(sport);
+				break;
+			case RS422_MODE:
+				imx_moxa_ioThinx4530_uart_rs422_mode(sport);
+				break;
+			case RS232_MODE:
+			default:
+				imx_moxa_ioThinx4530_uart_rs232_mode(sport);
+				break;
+			}
+
+                }
+                return 0;
+	}
+
+	return  -ENOIOCTLCMD;
+}
+#endif
 
 static struct uart_ops imx_pops = {
 	.tx_empty	= imx_tx_empty,
@@ -1597,6 +1761,9 @@ static struct uart_ops imx_pops = {
 	.type		= imx_type,
 	.config_port	= imx_config_port,
 	.verify_port	= imx_verify_port,
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	.ioctl		= imx_ioctl,
+#endif
 #if defined(CONFIG_CONSOLE_POLL)
 	.poll_init      = imx_poll_init,
 	.poll_get_char  = imx_poll_get_char,
@@ -1878,6 +2045,15 @@ static int serial_imx_probe_dt(struct imx_port *sport,
 	if (of_get_property(np, "fsl,dte-mode", NULL))
 		sport->dte_mode = 1;
 
+	if (of_get_property(np, "rts-gpios", NULL))
+		sport->have_rtsgpio = 1;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if (of_get_property(np, "fsl,uart-has-multimode", NULL))
+		sport->have_multimode = 1;
+
+	if (of_get_property(np, "fsl,rs485-p1", NULL))
+		sport->rs485_p1 = 1;
+#endif
 	sport->devdata = of_id->data;
 
 	return 0;
@@ -1947,6 +2123,12 @@ static int serial_imx_probe(struct platform_device *pdev)
 	init_timer(&sport->timer);
 	sport->timer.function = imx_timeout;
 	sport->timer.data     = (unsigned long)sport;
+
+	sport->mode =  RS232_MODE;
+
+	sport->gpios = mctrl_gpio_init(&sport->port, 0);
+	if (IS_ERR(sport->gpios))
+		return PTR_ERR(sport->gpios);
 
 	sport->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
 	if (IS_ERR(sport->clk_ipg)) {

@@ -43,6 +43,11 @@ struct termio {
 #define TIOCM_OUT1	0x2000
 #define TIOCM_OUT2	0x4000
 #define TIOCM_LOOP	0x8000
+#define TIOCM_OUT3      0x10000
+#define TIOCM_OUT4      0x20000
+#define TIOCM_OUT5      0x40000
+#define TIOCM_OUT6      0x80000
+
 
 /* ioctl (fd, TIOCSERGETLSR, &result) where result may be as below */
 

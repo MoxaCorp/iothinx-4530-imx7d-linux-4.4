@@ -255,7 +255,6 @@ static int mv88e6071_setup_port(struct mii_bus *mii_bus, int p)
         //Reset Switch PHY: PHY Control REG Offset is 0, bit 15 is S/W Reset.
         data = mv88e6071_phy_read(mii_bus, 0x10 + p ,PHY_SPECIFIC_CONTROL_REGISTER);
 
-	printk("@@ %d test data 0x%x\r\n",p, data);
         data &= ~0x30;    //clear bit[5:4] AutoMDI[X]
         data |= (0x20);   // set enable auto-crossover
         mv88e6071_phy_write(mii_bus, 0x10+p,PHY_SPECIFIC_CONTROL_REGISTER,data);
@@ -269,7 +268,6 @@ static int mv88e6071_setup_port(struct mii_bus *mii_bus, int p)
         }
         // Enable Ports State to Forwarding.
         data = reg_read(mii_bus, 0x18+p,MVREGADDR_PORT_CONTROL);
-printk("@port %d, data 0x%x\r\n",p,data);
         if((data & 0x03) != 3)
         {
                 data |= 0x03;    // set to forwarding state

@@ -356,6 +356,18 @@
 	assigned-clocks = <&clks IMX7D_UART5_ROOT_SRC>;
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
+
+	out1-gpios = <&gpio2 18 GPIO_ACTIVE_HIGH>; //P1_232_EN
+	out2-gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>; //P1_485_EN0
+	out3-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>; //P1_485_EN1
+	out4-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>; //P1_485_EN2
+	out5-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>; //P2_485_EN0
+	out6-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>; //P2_485_EN1
+	fsl,uart-has-rtscts;
+
+	fsl,uart-has-multimode;
+	fsl,rs485-p2;
+
 };
 
 &uart6 {//serial port 1
@@ -365,9 +377,16 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 
-	rts-gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-	out1-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+	out1-gpios = <&gpio2 18 GPIO_ACTIVE_HIGH>; //P1_232_EN
+	out2-gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>; //P1_485_EN0
+	out3-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>; //P1_485_EN1
+	out4-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>; //P1_485_EN2
+	out5-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>; //P2_485_EN0
+	out6-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>; //P2_485_EN1
 	fsl,uart-has-rtscts;
+
+	fsl,uart-has-multimode;
+	fsl,rs485-p1;
 };
 
 &uart7 {//824 RX/TX
@@ -423,20 +442,6 @@
                 gpios = <31 GPIO_ACTIVE_HIGH>;
                 output-high;
                 line-name = "hold-cs1";
-        };
-
-	line_hold_P1_Enable {
-                gpio-hog;
-                gpios = <18 GPIO_ACTIVE_HIGH>;
-                output-low;
-                line-name = "hold-p1enable";
-        };
-
-	line_hold_P2_Enable0 {
-                gpio-hog;
-                gpios = <27 GPIO_ACTIVE_HIGH>;
-                output-high;
-                line-name = "hold-p2enable0";
         };
 };
 
