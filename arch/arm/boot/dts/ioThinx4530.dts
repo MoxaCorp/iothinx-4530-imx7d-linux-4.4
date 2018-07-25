@@ -150,13 +150,21 @@
 	status = "okay";
 	label = "fec";
 
-	fixed-link {
-	      speed = <100>;
-	      full-duplex;
-	};
-	mii_bus0: mdio {
+	phy-handle = <&ethphy1>;
+
+	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
+
+		ethphy0: ethernet-phy@0 {
+                        reg = <0x10>;
+                };
+		ethphy1: ethernet-phy@1 {
+                        reg = <0x11>;
+                };
+		ethphy2: ethernet-phy@2 {
+                        reg = <0x12>;
+                };
 	};
 };
 
@@ -179,11 +187,7 @@
 	local-mac-address = [00 04 9F 01 1B B8];
 	fsl,magic-packet;
 	status = "okay";
-
-	fixed-link {
-	      speed = <100>;
-	      full-duplex;
-	};
+	phy-handle = <&ethphy0>;
 };
 
 &ecspi3 {

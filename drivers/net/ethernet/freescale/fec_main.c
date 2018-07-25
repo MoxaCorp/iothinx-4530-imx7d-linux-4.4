@@ -63,6 +63,9 @@
 #include <asm/cacheflush.h>
 
 #include "fec.h"
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+#include "mv88e6071.h"
+#endif
 
 static void set_multicast_list(struct net_device *ndev);
 static void fec_enet_itr_coal_init(struct net_device *ndev);
@@ -110,6 +113,9 @@ static struct platform_device_id fec_devtype[] = {
 				FEC_QUIRK_HAS_BUFDESC_EX | FEC_QUIRK_HAS_CSUM |
 				FEC_QUIRK_HAS_VLAN | FEC_QUIRK_HAS_AVB |
 				FEC_QUIRK_ERR007885 | FEC_QUIRK_BUG_CAPTURE |
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+				FEC_QUIRK_SINGLE_MDIO |
+#endif
 				FEC_QUIRK_HAS_RACC,
 	}, {
 		/* sentinel */
@@ -1778,7 +1784,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
 		phy_print_status(phy_dev);
 }
 
-static int fec_enet_mdio_read(struct mii_bus *bus, int mii_id, int regnum)
+static int fec_enet_mdio_read_r(struct mii_bus *bus, int mii_id, int regnum)
 {
 	struct fec_enet_private *fep = bus->priv;
 	struct device *dev = &fep->pdev->dev;
@@ -1816,7 +1822,7 @@ out:
 	return ret;
 }
 
-static int fec_enet_mdio_write(struct mii_bus *bus, int mii_id, int regnum,
+static int fec_enet_mdio_write_r(struct mii_bus *bus, int mii_id, int regnum,
 			   u16 value)
 {
 	struct fec_enet_private *fep = bus->priv;
@@ -1852,6 +1858,42 @@ static int fec_enet_mdio_write(struct mii_bus *bus, int mii_id, int regnum,
 	pm_runtime_put_autosuspend(dev);
 
 	return ret;
+}
+static int fec_enet_mdio_read(struct mii_bus *bus, int mii_id, int regnum)
+{
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(MOXA_IOTHINX4530_SWITHPHY_MIN <= mii_id && mii_id <= MOXA_IOTHINX4530_SWITHPHY_MAX)
+	{
+		int value,ret ;
+		ret = fec_enet_mdio_write_r(bus,REG_GLOBAL2,GLOBAL2_SMI_OP,GLOBAL2_SMI_OP_22_READ
+								| (mii_id << 5) | regnum);
+		mdelay(1);
+		value = fec_enet_mdio_read_r(bus,REG_GLOBAL2,GLOBAL2_SMI_DATA);
+		return value;
+
+	}
+#endif
+	return fec_enet_mdio_read_r(bus,mii_id,regnum);
+}
+
+static int fec_enet_mdio_write(struct mii_bus *bus, int mii_id, int regnum,
+			   u16 value)
+{
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(MOXA_IOTHINX4530_SWITHPHY_MIN <= mii_id && mii_id <= MOXA_IOTHINX4530_SWITHPHY_MAX)
+	{
+		int ret;
+		ret = fec_enet_mdio_write_r(bus,REG_GLOBAL2,GLOBAL2_SMI_DATA,value);
+		if(ret < 0 )
+			return ret;
+
+		ret = fec_enet_mdio_write_r(bus,REG_GLOBAL2,GLOBAL2_SMI_OP, GLOBAL2_SMI_OP_22_WRITE
+								| (mii_id << 5) | regnum);
+		printk("@@@ 44 mdio wrte %x %x = %x\r\n",mii_id,regnum,value);
+		return ret;
+	}
+#endif
+	return fec_enet_mdio_write_r(bus,mii_id,regnum,value);
 }
 
 static int fec_enet_clk_enable(struct net_device *ndev, bool enable)
@@ -1922,10 +1964,6 @@ static int fec_enet_mii_probe(struct net_device *ndev)
 	int dev_id = fep->dev_id;
 
 	fep->phy_dev = NULL;
-#ifdef CONFIG_MACH_MOXA_IOTHINX4530
-	extern int mv88e6071_init(struct mii_bus *);
-	mv88e6071_init(fep->mii_bus);
-#endif
 
 	if (fep->phy_node) {
 		phy_dev = of_phy_connect(ndev, fep->phy_node,
@@ -2062,7 +2100,9 @@ static int fec_enet_mii_init(struct platform_device *pdev)
 	fep->phy_speed = mii_speed << 1 | holdtime << 8;
 
 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
-
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	mdelay(10);
+#endif
 	fep->mii_bus = mdiobus_alloc();
 	if (fep->mii_bus == NULL) {
 		err = -ENOMEM;
@@ -2914,6 +2954,11 @@ fec_enet_open(struct net_device *ndev)
 	device_set_wakeup_enable(&ndev->dev, fep->wol_flag &
 				 FEC_WOL_FLAG_ENABLE);
 
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	extern int mv88e6071_init(struct mii_bus *);
+	if(fep->dev_id == 0)
+		mv88e6071_init(fep->mii_bus);
+#endif
 	return 0;
 
 err_enet_mii_probe:
