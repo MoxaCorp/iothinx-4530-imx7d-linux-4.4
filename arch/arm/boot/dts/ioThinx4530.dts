@@ -188,6 +188,7 @@
 	fsl,magic-packet;
 	status = "okay";
 	phy-handle = <&ethphy0>;
+	sphy-handle = <&ethphy2>;
 };
 
 &ecspi3 {

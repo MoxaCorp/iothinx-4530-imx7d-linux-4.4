@@ -1728,8 +1728,13 @@ static void fec_enet_adjust_link(struct net_device *ndev)
 {
 	struct fec_enet_private *fep = netdev_priv(ndev);
 	struct phy_device *phy_dev = fep->phy_dev;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	struct phy_device *sphy_dev = fep->sphy_dev;
+#endif
 	int status_change = 0;
-
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	int using_second_phy = 0;
+#endif
 	/* Prevent a state halted on mii error */
 	if (fep->mii_timeout && phy_dev->state == PHY_HALTED) {
 		phy_dev->state = PHY_RESUMING;
@@ -1768,7 +1773,37 @@ static void fec_enet_adjust_link(struct net_device *ndev)
 			netif_tx_unlock_bh(ndev);
 			napi_enable(&fep->napi);
 		}
-	} else {
+	}
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	else if (sphy_dev && sphy_dev->link) {
+		if (!fep->link) {
+			fep->link = sphy_dev->link;
+			status_change = 1;
+		}
+
+		if (fep->full_duplex != sphy_dev->duplex) {
+			fep->full_duplex = sphy_dev->duplex;
+			status_change = 1;
+		}
+
+		if (sphy_dev->speed != fep->speed) {
+			fep->speed = sphy_dev->speed;
+			status_change = 1;
+		}
+
+		/* if any of the above changed restart the FEC */
+		if (status_change) {
+			napi_disable(&fep->napi);
+			netif_tx_lock_bh(ndev);
+			fec_restart(ndev);
+			netif_wake_queue(ndev);
+			netif_tx_unlock_bh(ndev);
+			napi_enable(&fep->napi);
+		}
+		using_second_phy = 1;
+	}
+#endif
+	else {
 		if (fep->link) {
 			napi_disable(&fep->napi);
 			netif_tx_lock_bh(ndev);
@@ -1780,8 +1815,14 @@ static void fec_enet_adjust_link(struct net_device *ndev)
 		}
 	}
 
-	if (status_change)
-		phy_print_status(phy_dev);
+	if (status_change) {
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+		if(using_second_phy)
+			phy_print_status(sphy_dev);
+		else
+#endif
+			phy_print_status(phy_dev);
+	}
 }
 
 static int fec_enet_mdio_read_r(struct mii_bus *bus, int mii_id, int regnum)
@@ -1889,7 +1930,6 @@ static int fec_enet_mdio_write(struct mii_bus *bus, int mii_id, int regnum,
 
 		ret = fec_enet_mdio_write_r(bus,REG_GLOBAL2,GLOBAL2_SMI_OP, GLOBAL2_SMI_OP_22_WRITE
 								| (mii_id << 5) | regnum);
-		printk("@@@ 44 mdio wrte %x %x = %x\r\n",mii_id,regnum,value);
 		return ret;
 	}
 #endif
@@ -1958,13 +1998,24 @@ static int fec_enet_mii_probe(struct net_device *ndev)
 {
 	struct fec_enet_private *fep = netdev_priv(ndev);
 	struct phy_device *phy_dev = NULL;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	struct phy_device *sphy_dev = NULL;
+#endif
 	char mdio_bus_id[MII_BUS_ID_SIZE];
 	char phy_name[MII_BUS_ID_SIZE + 3];
 	int phy_id;
 	int dev_id = fep->dev_id;
 
 	fep->phy_dev = NULL;
-
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if (fep->sphy_node) {
+		sphy_dev = of_phy_connect(ndev, fep->sphy_node,
+					 &fec_enet_adjust_link, 0,
+					 fep->phy_interface);
+		if (!sphy_dev)
+			return -ENODEV;
+	}
+#endif
 	if (fep->phy_node) {
 		phy_dev = of_phy_connect(ndev, fep->phy_node,
 					 &fec_enet_adjust_link, 0,
@@ -2017,6 +2068,13 @@ static int fec_enet_mii_probe(struct net_device *ndev)
 	phy_dev->advertising = phy_dev->supported;
 
 	fep->phy_dev = phy_dev;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(sphy_dev){
+		sphy_dev->supported = phy_dev->supported;
+		sphy_dev->advertising = sphy_dev->advertising;
+		fep->sphy_dev = sphy_dev;
+	}
+#endif
 	fep->link = 0;
 	fep->full_duplex = 0;
 
@@ -2346,6 +2404,9 @@ static int fec_enet_set_pauseparam(struct net_device *ndev,
 		if (netif_running(ndev))
 			fec_stop(ndev);
 		phy_start_aneg(fep->phy_dev);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+		if(fep->sphy_dev) phy_start_aneg(fep->sphy_dev);
+#endif
 	}
 	if (netif_running(ndev)) {
 		napi_disable(&fep->napi);
@@ -2949,6 +3010,9 @@ fec_enet_open(struct net_device *ndev)
 
 	napi_enable(&fep->napi);
 	phy_start(fep->phy_dev);
+#ifdef 	CONFIG_MACH_MOXA_IOTHINX4530
+	if(fep->sphy_dev)phy_start(fep->sphy_dev);
+#endif
 	netif_tx_start_all_queues(ndev);
 
 	device_set_wakeup_enable(&ndev->dev, fep->wol_flag &
@@ -2978,6 +3042,9 @@ fec_enet_close(struct net_device *ndev)
 	struct fec_enet_private *fep = netdev_priv(ndev);
 
 	phy_stop(fep->phy_dev);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(fep->sphy_dev) phy_stop(fep->sphy_dev);
+#endif
 
 	if (netif_device_present(ndev)) {
 		napi_disable(&fep->napi);
@@ -2987,6 +3054,10 @@ fec_enet_close(struct net_device *ndev)
 
 	phy_disconnect(fep->phy_dev);
 	fep->phy_dev = NULL;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	if(fep->sphy_dev) phy_disconnect(fep->sphy_dev);
+	fep->sphy_dev = NULL;
+#endif
 
 	fec_enet_clk_enable(ndev, false);
 	pinctrl_pm_select_sleep_state(&fep->pdev->dev);
@@ -3375,6 +3446,9 @@ fec_probe(struct platform_device *pdev)
 	const struct of_device_id *of_id;
 	static int dev_id;
 	struct device_node *np = pdev->dev.of_node, *phy_node;
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	struct device_node *sphy_node = NULL;
+#endif
 	int num_tx_qs;
 	int num_rx_qs;
 
@@ -3436,6 +3510,10 @@ fec_probe(struct platform_device *pdev)
 	}
 	fep->phy_node = phy_node;
 
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	sphy_node = of_parse_phandle(np, "sphy-handle", 0);
+	fep->sphy_node = sphy_node;
+#endif
 	ret = of_get_phy_mode(pdev->dev.of_node);
 	if (ret < 0) {
 		pdata = dev_get_platdata(&pdev->dev);
@@ -3574,6 +3652,9 @@ failed_clk_ipg:
 	fec_enet_clk_enable(ndev, false);
 failed_clk:
 failed_phy:
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	of_node_put(sphy_node);
+#endif
 	of_node_put(phy_node);
 failed_ioremap:
 	free_netdev(ndev);
@@ -3594,6 +3675,9 @@ fec_drv_remove(struct platform_device *pdev)
 	if (fep->reg_phy)
 		regulator_disable(fep->reg_phy);
 	of_node_put(fep->phy_node);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	of_node_put(fep->sphy_node);
+#endif
 	free_netdev(ndev);
 
 	return 0;
@@ -3609,6 +3693,9 @@ static int __maybe_unused fec_suspend(struct device *dev)
 		if (fep->wol_flag & FEC_WOL_FLAG_ENABLE)
 			fep->wol_flag |= FEC_WOL_FLAG_SLEEP_ON;
 		phy_stop(fep->phy_dev);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+		if(fep->sphy_dev) phy_stop(fep->sphy_dev);
+#endif
 		napi_disable(&fep->napi);
 		netif_tx_lock_bh(ndev);
 		netif_device_detach(ndev);
@@ -3669,6 +3756,9 @@ static int __maybe_unused fec_resume(struct device *dev)
 		netif_tx_unlock_bh(ndev);
 		napi_enable(&fep->napi);
 		phy_start(fep->phy_dev);
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+		if(fep->sphy_dev) phy_start(fep->sphy_dev);
+#endif
 	}
 	rtnl_unlock();
 
