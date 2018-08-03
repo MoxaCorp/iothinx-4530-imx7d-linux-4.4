@@ -362,12 +362,6 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 
-	out1-gpios = <&gpio2 18 GPIO_ACTIVE_HIGH>; //P1_232_EN
-	out2-gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>; //P1_485_EN0
-	out3-gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>; //P1_485_EN1
-	out4-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>; //P1_485_EN2
-	out5-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>; //P2_485_EN0
-	out6-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>; //P2_485_EN1
 	fsl,uart-has-rtscts;
 
 	fsl,uart-has-multimode;
