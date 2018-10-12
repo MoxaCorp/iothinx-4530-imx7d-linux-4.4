@@ -284,6 +284,7 @@ static int create_image(int platform_mode)
 		goto Enable_cpus;
 
 	local_irq_disable();
+	hard_cond_local_irq_disable();
 
 	system_state = SYSTEM_SUSPEND;
 

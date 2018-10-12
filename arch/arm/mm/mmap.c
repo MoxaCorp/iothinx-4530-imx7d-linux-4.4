@@ -32,6 +32,7 @@ static int mmap_is_legacy(void)
 
 static unsigned long mmap_base(unsigned long rnd)
 {
+#ifndef CONFIG_ARM_FCSE
 	unsigned long gap = rlimit(RLIMIT_STACK);
 
 	if (gap < MIN_GAP)
@@ -40,6 +41,9 @@ static unsigned long mmap_base(unsigned long rnd)
 		gap = MAX_GAP;
 
 	return PAGE_ALIGN(TASK_SIZE - gap - rnd);
+#else /* CONFIG_ARM_FCSE */
+	return PAGE_ALIGN(FCSE_TASK_SIZE - rlimit(RLIMIT_STACK) - rnd);
+#endif /* CONFIG_ARM_FCSE */
 }
 
 /*
@@ -75,11 +79,15 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
 		if (aliasing && flags & MAP_SHARED &&
 		    (addr - (pgoff << PAGE_SHIFT)) & (SHMLBA - 1))
 			return -EINVAL;
-		return addr;
+		goto found_addr;
 	}
 
 	if (len > TASK_SIZE)
 		return -ENOMEM;
+
+	info.length = len;
+	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+	info.align_offset = pgoff << PAGE_SHIFT;
 
 	if (addr) {
 		if (do_align)
@@ -129,8 +137,12 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
 		if (aliasing && flags & MAP_SHARED &&
 		    (addr - (pgoff << PAGE_SHIFT)) & (SHMLBA - 1))
 			return -EINVAL;
-		return addr;
+		goto found_addr;
 	}
+
+	info.length = len;
+	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+	info.align_offset = pgoff << PAGE_SHIFT;
 
 	/* requesting a specific address */
 	if (addr) {
@@ -158,7 +170,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
 	 * can happen with large stack limits and large mmap()
 	 * allocations.
 	 */
-	if (addr & ~PAGE_MASK) {
+	if (!fcse() && addr & ~PAGE_MASK) {
 		VM_BUG_ON(addr != -ENOMEM);
 		info.flags = 0;
 		info.low_limit = mm->mmap_base;

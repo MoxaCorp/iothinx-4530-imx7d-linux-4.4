@@ -597,7 +597,7 @@ do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
 				tracehook_notify_resume(regs);
 			}
 		}
-		local_irq_disable();
+		hard_local_irq_disable();
 		thread_flags = current_thread_info()->flags;
 	} while (thread_flags & _TIF_WORK_MASK);
 	return 0;
