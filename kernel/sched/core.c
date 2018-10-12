@@ -2078,7 +2078,9 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 	 */
 	smp_mb__before_spinlock();
 	raw_spin_lock_irqsave(&p->pi_lock, flags);
-	if (!(p->state & state)) {
+	if (!(p->state & state) ||
+	    (p->state & (TASK_NOWAKEUP|TASK_HARDENING)))
+	{
 		/*
 		 * The task might be running due to a spinlock sleeper
 		 * wakeup. Check the saved state and set it to running

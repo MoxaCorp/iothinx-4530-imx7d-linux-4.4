@@ -562,10 +562,22 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
 static int
 do_sect_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 {
+	unsigned long irqflags;
+
+	if (__ipipe_report_trap(IPIPE_TRAP_SECTION, regs))
+		return 0;
+
+	irqflags = ipipe_fault_entry();
+
+
 	if (interrupts_enabled(regs))
 		local_irq_enable();
 
 	do_bad_area(addr, fsr, regs);
+
+	ipipe_fault_exit(irqflags);
+
+
 	return 0;
 }
 #endif /* CONFIG_ARM_LPAE */

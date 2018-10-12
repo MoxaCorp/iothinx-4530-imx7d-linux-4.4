@@ -303,6 +303,61 @@ static inline int forced_early_printk(const char *fmt, va_list ap)
 }
 #endif
 
+#ifdef CONFIG_RAW_PRINTK
+static struct console *raw_console;
+static IPIPE_DEFINE_RAW_SPINLOCK(raw_console_lock);
+
+void raw_vprintk(const char *fmt, va_list ap)
+{
+	unsigned long flags;
+	char buf[256];
+	int n;
+
+	if (raw_console == NULL || console_suspended)
+		return;
+	n = vscnprintf(buf, sizeof(buf), fmt, ap);
+	touch_nmi_watchdog();
+	raw_spin_lock_irqsave(&raw_console_lock, flags);
+	if (raw_console)
+		raw_console->write_raw(raw_console, buf, n);
+	raw_spin_unlock_irqrestore(&raw_console_lock, flags);
+}
+
+asmlinkage __visible void raw_printk(const char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	raw_vprintk(fmt, ap);
+	va_end(ap);
+}
+
+static inline void register_raw_console(struct console *newcon)
+{
+	if ((newcon->flags & CON_RAW) != 0 && newcon->write_raw)
+		raw_console = newcon;
+}
+
+static inline void unregister_raw_console(struct console *oldcon)
+{
+	unsigned long flags;
+	raw_spin_lock_irqsave(&raw_console_lock, flags);
+	if (oldcon == raw_console)
+		raw_console = NULL;
+	raw_spin_unlock_irqrestore(&raw_console_lock, flags);
+}
+
+#else
+
+static inline void register_raw_console(struct console *newcon)
+{ }
+
+static inline void unregister_raw_console(struct console *oldcon)
+{ }
+
+#endif
+
+
 #ifdef CONFIG_PRINTK
 DECLARE_WAIT_QUEUE_HEAD(log_wait);
 /* the next printk record to read by syslog(READ) or /proc/kmsg */
@@ -1773,7 +1828,7 @@ asmlinkage int vprintk_emit(int facility, int level,
 	int printed_len = 0;
 	bool in_sched = false;
 	/* cpu currently holding logbuf_lock in this function */
-	static unsigned int logbuf_cpu = UINT_MAX;
+	static volatile unsigned int logbuf_cpu = UINT_MAX;
 
 	/*
 	 * Fall back to early_printk if a debugging subsystem has
@@ -1782,8 +1837,8 @@ asmlinkage int vprintk_emit(int facility, int level,
 	if (unlikely(forced_early_printk(fmt, args)))
 		return 1;
 
-	if (level == LOGLEVEL_SCHED) {
-		level = LOGLEVEL_DEFAULT;
+	if (level == SCHED_MESSAGE_LOGLEVEL) {
+		level = -1;
 		in_sched = true;
 	}
 
@@ -2055,7 +2110,7 @@ asmlinkage __visible int printk(const char *fmt, ...)
 	if (__ipipe_printk_bypass || oops_in_progress)
 		cs = ipipe_disable_context_check();
 	else if (__ipipe_current_domain == ipipe_root_domain) {
-		if (ipipe_head_domain != ipipe_root_domain && 
+		if (ipipe_head_domain != ipipe_root_domain &&
 		    (raw_irqs_disabled_flags(flags) ||
 		     test_bit(IPIPE_STALL_FLAG, &__ipipe_head_status)))
 			sprintk = 0;

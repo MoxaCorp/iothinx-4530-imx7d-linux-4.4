@@ -27,6 +27,7 @@ struct sched_param {
 #include <linux/mm_types.h>
 #include <linux/preempt.h>
 #include <asm/kmap_types.h>
+#include <linux/ipipe.h>
 
 #include <asm/page.h>
 #include <asm/ptrace.h>

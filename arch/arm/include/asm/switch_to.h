@@ -28,12 +28,20 @@ switch_kmaps(struct task_struct *prev_p, struct task_struct *next_p) { }
  * contains the memory barrier to tell GCC not to cache `current'.
  */
 extern struct task_struct *__switch_to(struct task_struct *, struct thread_info *, struct thread_info *);
-
+#ifdef CONFIG_IPIPE_WANT_PREEMPTIBLE_SWITCH
 #define switch_to(prev,next,last)					\
 do {									\
 	__complete_pending_tlbi();					\
+	 hard_cond_local_irq_disable();                                 \
 	switch_kmaps(prev, next);					\
+	hard_cond_local_irq_enable();                                   \
 	last = __switch_to(prev,task_thread_info(prev), task_thread_info(next));	\
 } while (0)
+#else
+#define switch_to(prev,next,last)					\
+do {									\
+	last = __switch_to(prev,task_thread_info(prev), task_thread_info(next)); \
+} while (0)
+#endif
 
 #endif /* __ASM_ARM_SWITCH_TO_H */

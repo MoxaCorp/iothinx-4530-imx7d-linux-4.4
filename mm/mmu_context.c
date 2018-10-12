@@ -21,16 +21,19 @@ void use_mm(struct mm_struct *mm)
 {
 	struct mm_struct *active_mm;
 	struct task_struct *tsk = current;
+	unsigned long flags;
 
 	task_lock(tsk);
 	preempt_disable_rt();
 	active_mm = tsk->active_mm;
+	ipipe_mm_switch_protect(flags);
 	if (active_mm != mm) {
 		atomic_inc(&mm->mm_count);
 		tsk->active_mm = mm;
 	}
 	tsk->mm = mm;
-	switch_mm(active_mm, mm, tsk);
+	__switch_mm(active_mm, mm, tsk);
+	ipipe_mm_switch_unprotect(flags);
 	preempt_enable_rt();
 	task_unlock(tsk);
 #ifdef finish_arch_post_lock_switch

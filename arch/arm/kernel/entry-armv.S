@@ -257,7 +257,11 @@ ENDPROC(__irq_svc)
 #ifdef CONFIG_PREEMPT
 svc_preempt:
 	mov	r8, lr
+#ifndef CONFIG_IPIPE
 1:	bl	preempt_schedule_irq		@ irq en/disable is done inside
+#else
+1:      bl      __ipipe_preempt_schedule_irq    @ irq en/disable is done inside
+#endif /* CONFIG_IPIPE */
 	ldr	r0, [tsk, #TI_FLAGS]		@ get new tasks TI_FLAGS
 	tst	r0, #_TIF_NEED_RESCHED
 	bne	1b
@@ -268,7 +272,7 @@ svc_preempt:
 	beq	1b
 	ret	r8				@ go again
 
-#endif
+#endif /* CONFIG_PREEMPT */
 
 __und_fault:
 	@ Correct the PC such that it is pointing at the instruction

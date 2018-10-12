@@ -98,16 +98,20 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
 		vma = find_vma(mm, addr);
 		if (TASK_SIZE - len >= addr &&
 		    (!vma || addr + len <= vm_start_gap(vma)))
-			return addr;
+			goto found_addr;
+
 	}
 
 	info.flags = 0;
-	info.length = len;
 	info.low_limit = mm->mmap_base;
-	info.high_limit = TASK_SIZE;
-	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
-	info.align_offset = pgoff << PAGE_SHIFT;
-	return vm_unmapped_area(&info);
+	info.high_limit = fcse() == 0 ? TASK_SIZE :
+		(PAGE_ALIGN(mm->start_stack)
+		 - rlimit(RLIMIT_STACK) - PAGE_SIZE);
+	addr = vm_unmapped_area(&info);
+
+  found_addr:
+	return fcse_check_mmap_addr(mm, addr, len, &info, flags);
+
 }
 
 unsigned long
@@ -151,18 +155,31 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
 		else
 			addr = PAGE_ALIGN(addr);
 		vma = find_vma(mm, addr);
-		if (TASK_SIZE - len >= addr &&
+		if (TASK_SIZE - len > addr &&
 				(!vma || addr + len <= vm_start_gap(vma)))
-			return addr;
+			goto found_addr;
 	}
 
 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
 	info.length = len;
 	info.low_limit = FIRST_USER_ADDRESS;
+
+	if (fcse()) {
+		unsigned long top, bottom, shift;
+
+		BUG_ON(mm->start_stack == 0);
+		top = PAGE_ALIGN(mm->start_stack);
+		bottom = top - rlimit(RLIMIT_STACK);
+		shift = FCSE_TASK_SIZE - (top - PAGE_SIZE);
+		if (mm->mmap_base > bottom)
+			mm->mmap_base -= shift;
+	}
+
 	info.high_limit = mm->mmap_base;
-	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
-	info.align_offset = pgoff << PAGE_SHIFT;
+
 	addr = vm_unmapped_area(&info);
+  found_addr:
+	addr = fcse_check_mmap_addr(mm, addr, len, &info, flags);
 
 	/*
 	 * A failed mmap() very likely causes application failure,

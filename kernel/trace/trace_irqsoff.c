@@ -477,14 +477,14 @@ inline void print_irqtrace_events(struct task_struct *curr)
 void trace_hardirqs_on(void)
 {
 	trace_preemptirqsoff_hist(IRQS_ON, 0);
-	if (!preempt_trace() && irq_trace())
+	if (ipipe_root_p && !preempt_trace() && irq_trace())
 		stop_critical_timing(CALLER_ADDR0, CALLER_ADDR1);
 }
 EXPORT_SYMBOL(trace_hardirqs_on);
 
 void trace_hardirqs_off(void)
 {
-	if (!preempt_trace() && irq_trace())
+	if (ipipe_root_p && !preempt_trace() && irq_trace())
 		start_critical_timing(CALLER_ADDR0, CALLER_ADDR1);
 	trace_preemptirqsoff_hist(IRQS_OFF, 1);
 }
@@ -493,14 +493,14 @@ EXPORT_SYMBOL(trace_hardirqs_off);
 __visible void trace_hardirqs_on_caller(unsigned long caller_addr)
 {
 	trace_preemptirqsoff_hist(IRQS_ON, 0);
-	if (!preempt_trace() && irq_trace())
+	if (ipipe_root_p && !preempt_trace() && irq_trace())
 		stop_critical_timing(CALLER_ADDR0, caller_addr);
 }
 EXPORT_SYMBOL(trace_hardirqs_on_caller);
 
 __visible void trace_hardirqs_off_caller(unsigned long caller_addr)
 {
-	if (!preempt_trace() && irq_trace())
+	if (ipipe_root_p && !preempt_trace() && irq_trace())
 		start_critical_timing(CALLER_ADDR0, caller_addr);
 	trace_preemptirqsoff_hist(IRQS_OFF, 1);
 }
