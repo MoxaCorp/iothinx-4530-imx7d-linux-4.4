@@ -387,7 +387,7 @@
 	fsl,uart-has-multimode;
 	fsl,rs485-p1;
 };
-
+/*
 &uart7 {//824 RX/TX
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart7>;
@@ -395,7 +395,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 };
-
+*/
 &usbotg1 {
 	vbus-supply = <&reg_usb_otg1_vbus>;
 	status = "okay";
@@ -431,7 +431,7 @@
 };
 &wdog1 {
         pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_wdog>;
+        //pinctrl-0 = <&pinctrl_wdog>;
         fsl,ext-reset-output;
 };
 
@@ -506,9 +506,10 @@
 
 	watchdog: watchdog {
                 compatible = "linux,wdt-gpio";
+                pcinctrl-0 = <&pinctrl_wdog>;
                 gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
                 hw_algo = "toggle";
-                hw_margin_ms = <1000>;
+                hw_margin_ms = <200>;
                 always-running;
         };
 
