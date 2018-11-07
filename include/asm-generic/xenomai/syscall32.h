@@ -1,1 +1,1 @@
-/home/tzongyen_lin/work/4530/xenomai/xenomai-3/kernel/cobalt/include/asm-generic/xenomai/syscall32.h
+../../../../xenomai-3/kernel/cobalt/include/asm-generic/xenomai/syscall32.h

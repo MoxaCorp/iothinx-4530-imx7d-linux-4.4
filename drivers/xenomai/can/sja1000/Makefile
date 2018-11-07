@@ -1,1 +1,1 @@
-/home/tzongyen_lin/work/4530/xenomai/xenomai-3/kernel/drivers/can/sja1000/Makefile
+../../../../../xenomai-3/kernel/drivers/can/sja1000/Makefile

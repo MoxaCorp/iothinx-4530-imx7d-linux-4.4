@@ -1,1 +1,1 @@
-/home/tzongyen_lin/work/4530/xenomai/xenomai-3/kernel/cobalt/init.c
+../../../xenomai-3/kernel/cobalt/init.c

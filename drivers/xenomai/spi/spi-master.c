@@ -1,1 +1,1 @@
-/home/tzongyen_lin/work/4530/xenomai/xenomai-3/kernel/drivers/spi/spi-master.c
+../../../../xenomai-3/kernel/drivers/spi/spi-master.c
