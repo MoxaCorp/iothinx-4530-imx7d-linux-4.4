@@ -353,7 +353,7 @@ static int imx_rs485_config(struct uart_port *port,struct serial_rs485 *rs485con
 static void imx_moxa_ioThinx4530_uart_rs232_mode(struct imx_port *sport)
 {
 	struct uart_port *port = (struct uart_port *) sport;
-	printk("ttymxc%d change mod to RS232\r\n",sport->port.line);
+	//printk("ttymxc%d change mod to RS232\r\n",sport->port.line);
 
 	sport->port.mctrl |= IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P2_485_EN1;
 	sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN1 | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0);
@@ -366,7 +366,7 @@ static void imx_moxa_ioThinx4530_uart_rs232_mode(struct imx_port *sport)
 static void imx_moxa_ioThinx4530_uart_rs422_mode(struct imx_port *sport)
 {
 	struct uart_port *port = (struct uart_port *) sport;
-	printk("ttymxc%d change mod to RS422\r\n",sport->port.line);
+	//printk("ttymxc%d change mod to RS422\r\n",sport->port.line);
 
 	sport->port.mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
 	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0 | IOTHINX4530_P2_485_EN1);
@@ -379,7 +379,7 @@ static void imx_moxa_ioThinx4530_uart_rs422_mode(struct imx_port *sport)
 static void imx_moxa_ioThinx4530_uart_rs485_mode(struct imx_port *sport)
 {
 	struct uart_port *port = (struct uart_port *) sport;
-	printk("ttymxc%d change mod to RS485\r\n",port->line);
+	//printk("ttymxc%d change mod to RS485\r\n",port->line);
 
 	sport->port.mctrl |= IOTHINX4530_P2_485_EN0;
 	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1
