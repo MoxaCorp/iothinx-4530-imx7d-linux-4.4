@@ -506,16 +506,10 @@ struct fec_enet_private {
 	/* Phylib and MDIO interface */
 	struct	mii_bus *mii_bus;
 	struct	phy_device *phy_dev;
-#ifdef CONFIG_MACH_MOXA_IOTHINX4530
-	struct	phy_device *sphy_dev;
-#endif
 	int	mii_timeout;
 	uint	phy_speed;
 	phy_interface_t	phy_interface;
 	struct device_node *phy_node;
-#ifdef CONFIG_MACH_MOXA_IOTHINX4530
-	struct device_node *sphy_node;
-#endif
 	int	link;
 	int	full_duplex;
 	int	speed;
