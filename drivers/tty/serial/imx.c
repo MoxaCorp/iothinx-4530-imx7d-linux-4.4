@@ -1769,7 +1769,11 @@ static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg
 				break;
 			}
 
-                }
+                }else {
+			opmode = sport->mode;
+			if (put_user(opmode, (int __user *)argp))
+				return -EFAULT;
+		}
                 return 0;
 	}
 
