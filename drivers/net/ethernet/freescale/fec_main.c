@@ -1889,7 +1889,6 @@ static int fec_enet_mdio_write(struct mii_bus *bus, int mii_id, int regnum,
 
 		ret = fec_enet_mdio_write_r(bus,REG_GLOBAL2,GLOBAL2_SMI_OP, GLOBAL2_SMI_OP_22_WRITE
 								| (mii_id << 5) | regnum);
-		printk("@@@ 44 mdio wrte %x %x = %x\r\n",mii_id,regnum,value);
 		return ret;
 	}
 #endif
@@ -2987,8 +2986,21 @@ fec_enet_close(struct net_device *ndev)
 
 	phy_disconnect(fep->phy_dev);
 	fep->phy_dev = NULL;
-
+#ifdef CONFIG_MACH_MOXA_IOTHINX4530
+	clk_disable_unprepare(fep->clk_ahb);
+	if (fep->clk_enet_out)
+		clk_disable_unprepare(fep->clk_enet_out);
+	if (fep->clk_ptp) {
+		mutex_lock(&fep->ptp_clk_mutex);
+//		clk_disable_unprepare(fep->clk_ptp);
+		fep->ptp_clk_on = false;
+		mutex_unlock(&fep->ptp_clk_mutex);
+	}
+	if (fep->clk_ref)
+		clk_disable_unprepare(fep->clk_ref);
+#else
 	fec_enet_clk_enable(ndev, false);
+#endif
 	pinctrl_pm_select_sleep_state(&fep->pdev->dev);
 	pm_runtime_mark_last_busy(&fep->pdev->dev);
 	pm_runtime_put_autosuspend(&fep->pdev->dev);
