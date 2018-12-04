@@ -1,0 +1,46 @@
+/*
+ * U-Boot itb image source file for "uc3100 project"
+ */
+
+/dts-v1/;
+
+/ {
+	description = "U-Boot itb image source file for iothinx4530 project";
+	#address-cells = <1>;
+	
+	images {
+		kernel@iothinx4530 {
+			description = "Moxa Iothinx4530 Series Unify Linux Kernel";
+			data = /incbin/("../arch/arm/boot/zImage");
+			type = "kernel";
+			arch = "arm";
+			os = "linux";
+			compression = "none";
+			load = <0x80080000>;
+			entry = <0x80080000>;
+		};
+		fdt@iothinx4530 {
+			description = "Flattened Device Tree blob for ioThinx4530";
+			data = /incbin/("../arch/arm/boot/dts/ioThinx4530.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			load = <0x83000000>;
+		};
+	};
+	
+	configurations {
+		default = "APID8000A042";
+		APID8000A042 {
+			description = "Boot Linux kernel with iothinx4530 FDT blob";
+			kernel = "kernel@iothinx4530";
+			fdt = "fdt@iothinx4530";
+		};
+		APID8000A043 {
+			description = "Boot Linux kernel with iothinx4530 FDT blob";
+			kernel = "kernel@iothinx4530";
+			fdt = "fdt@iothinx4530";
+		};
+	};
+};
+
