@@ -1,0 +1,5 @@
+#!/bin/bash
+
+make dtbs
+mkimage -f its/imx7d-moxa-iothinx-4530.its its/imx7d-moxa-iothinx-4530.itb
+
