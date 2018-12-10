@@ -337,7 +337,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 };
-/*
+
 &uart2 {//MR
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
@@ -345,7 +345,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
 	status = "okay";
 };
-*/
+
 
 &uart3 {//ML
 	pinctrl-names = "default";
@@ -429,6 +429,7 @@
 	non-removable;
 	status = "okay";
 };
+
 &wdog1 {
         pinctrl-names = "default";
         //pinctrl-0 = <&pinctrl_wdog>;
@@ -444,6 +445,28 @@
         };
 };
 
+&gpio5 {
+	line_r_sync {
+                gpios = <14 GPIO_ACTIVE_LOW>;
+                output-high;
+                line-name = "r-sync";
+        };
+	line_r_pf {
+                gpios = <15 GPIO_ACTIVE_LOW>;
+                output-high;
+                line-name = "r-pf";
+        };
+	line_r_rst {
+                gpios = <16 GPIO_ACTIVE_LOW>;
+                output-high;
+                line-name = "r-rst";
+        };
+	line_r_id {
+                gpios = <17 GPIO_ACTIVE_LOW>;
+                output-high;
+                line-name = "r-id";
+        };
+};
 
 / {
 	m4_tcm: tcml@007f8000 {
@@ -455,46 +478,46 @@
 		compatible = "gpio-leds";
 		pinctrl-0 = <&pinctrl_leds>;
 
-		led_fault {
-                        label = "ioThinx4530:red:fault";
+		led_rdy_r {
+                        label = "rdy-red";
                         gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+                        default-state = "off";
 		};
 
-		led_rdy {
-                        label = "ioThinx4530:green:rdy";
+		led_rdy_g {
+                        label = "rdy-green";
                         gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+			linux,default-trigger = "timer";
 		};
-		sd_led {
-                        label = "sd_led";
+		led_sd {
+                        label = "sd-led";
                         gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+			linux,default-trigger = "mmc1";
 		};
 
-		usr1_g_led {
-                        label = "usr1_g_led";
+		led_u1_g {
+                        label = "u1-green";
                         gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+                        default-state = "off";
 		};
-		usr1_r_led {
-                        label = "usr1_r_led";
+		led_u1_r {
+                        label = "u1-red";
                         gpios = <&gpio2 9 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+                        default-state = "off";
 		};
-		usr2_g_led {
-                        label = "usr2_g_led";
+		led_u2_g {
+                        label = "u2-green";
                         gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+                        default-state = "off";
 		};
-		usr2_r_led {
-                        label = "usr2_r_led";
+		led_u2_r {
+                        label = "u2-red";
                         gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
-                        default-state = "on";
+                        default-state = "off";
 		};
 	};
 
-        gpio-decoder0 {
+        rotary-switch {
                 compatible = "gpio-decoder";
                 gpios = <&gpio2 15 GPIO_ACTIVE_LOW>,
                         <&gpio2 14 GPIO_ACTIVE_LOW>,
@@ -513,7 +536,6 @@
                 always-running;
         };
 
-
         all_gpio {
                 status = "okay";
                 pinctrl-names = "default";
@@ -523,6 +545,14 @@
 			<&pinctrl_ml_gpio>,
 			<&pinctrl_serial3in1_gpio>;
         };
+
+	push-button {
+		compatible = "gpio-decoder";
+		gpios = <&gpio5 9 GPIO_ACTIVE_LOW>, /* MP Jumper */
+			<&gpio1 3 GPIO_ACTIVE_LOW>; /* Push button */
+                linux,axis = <1>; /* ABS_X */
+                decoder-max-value = <3>;
+	};
 };
 
 &iomuxc {
