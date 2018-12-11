@@ -348,6 +348,7 @@ static void imx_port_ucrs_restore(struct uart_port *port,
 #define IOTHINX4530_P2_485_EN0 TIOCM_OUT5
 #define IOTHINX4530_P2_485_EN1 TIOCM_OUT6
 static struct mctrl_gpios * gshare_gpios;
+static int moxa_3in1_mctrl = 0;
 static int imx_rs485_config(struct uart_port *port,struct serial_rs485 *rs485conf);
 
 static void imx_moxa_ioThinx4530_uart_rs232_mode(struct imx_port *sport)
@@ -355,9 +356,9 @@ static void imx_moxa_ioThinx4530_uart_rs232_mode(struct imx_port *sport)
 	struct uart_port *port = (struct uart_port *) sport;
 	//printk("ttymxc%d change mod to RS232\r\n",sport->port.line);
 
-	sport->port.mctrl |= IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P2_485_EN1;
-	sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN1 | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0);
-	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+	moxa_3in1_mctrl |= IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P2_485_EN1;
+	moxa_3in1_mctrl &= ~(IOTHINX4530_P1_485_EN1 | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0);
+	mctrl_gpio_set(gshare_gpios, moxa_3in1_mctrl);
 
 	port->rs485.flags &= ~SER_RS485_ENABLED;
 	imx_rs485_config(port,&(port->rs485));
@@ -368,9 +369,9 @@ static void imx_moxa_ioThinx4530_uart_rs422_mode(struct imx_port *sport)
 	struct uart_port *port = (struct uart_port *) sport;
 	//printk("ttymxc%d change mod to RS422\r\n",sport->port.line);
 
-	sport->port.mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
-	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0 | IOTHINX4530_P2_485_EN1);
-	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+	moxa_3in1_mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
+	moxa_3in1_mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN0 | IOTHINX4530_P2_485_EN1);
+	mctrl_gpio_set(gshare_gpios, moxa_3in1_mctrl);
 
 	port->rs485.flags &= ~SER_RS485_ENABLED;
 	imx_rs485_config(port,&(port->rs485));
@@ -381,10 +382,10 @@ static void imx_moxa_ioThinx4530_uart_rs485_mode(struct imx_port *sport)
 	struct uart_port *port = (struct uart_port *) sport;
 	//printk("ttymxc%d change mod to RS485\r\n",port->line);
 
-	sport->port.mctrl |= IOTHINX4530_P2_485_EN0;
-	sport->port.mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1
+	moxa_3in1_mctrl |= IOTHINX4530_P2_485_EN0;
+	moxa_3in1_mctrl &= ~(IOTHINX4530_P1_232_EN | IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1
 					| IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1);
-	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+	mctrl_gpio_set(gshare_gpios, moxa_3in1_mctrl);
 
 	port->rs485.flags |= SER_RS485_ENABLED;
 	imx_rs485_config(port,&(port->rs485));
@@ -395,20 +396,20 @@ static void imx_moxa_uart485_tx_active(unsigned long data)
 {
 	struct imx_port *sport = (struct imx_port *)data;
 	if(sport->rs485_p1)
-		sport->port.mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
+		moxa_3in1_mctrl |= IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1;
 	else
-		sport->port.mctrl |= IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1;
-	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+		moxa_3in1_mctrl |= IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1;
+	mctrl_gpio_set(gshare_gpios, moxa_3in1_mctrl);
 }
 
 static void imx_moxa_uart485_tx_inactive(unsigned long data)
 {
 	struct imx_port *sport = (struct imx_port *)data;
 	if(sport->rs485_p1)
-		sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1);
+		moxa_3in1_mctrl &= ~(IOTHINX4530_P1_485_EN0 | IOTHINX4530_P1_485_EN1);
 	else
-		sport->port.mctrl &= ~(IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1);
-	mctrl_gpio_set(sport->gpios, sport->port.mctrl);
+		moxa_3in1_mctrl &= ~(IOTHINX4530_P1_485_EN2 | IOTHINX4530_P2_485_EN1);
+	mctrl_gpio_set(gshare_gpios, moxa_3in1_mctrl);
 }
 
 static void imx_uart_rts_active(struct imx_port *sport, u32 *ucr2)
@@ -1362,6 +1363,8 @@ static void imx_shutdown(struct uart_port *port)
 	 */
 	del_timer_sync(&sport->timer);
 
+	if(sport->have_multimode)
+		del_timer_sync(&sport->rs485_timer);
 	/*
 	 * Disable all interrupts, port and break condition.
 	 */
@@ -1741,10 +1744,8 @@ static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg
 
 	if(!sport->have_multimode)
 		return -ENOIOCTLCMD;
-
 	if (cmd == MOXA_SET_OP_MODE || cmd == MOXA_GET_OP_MODE) {
                 unsigned long opmode;
-
                 if (cmd == MOXA_SET_OP_MODE) {
 
                         if (get_user(opmode, (int __user *) argp))
@@ -1754,6 +1755,9 @@ static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg
                                         opmode != RS422_MODE &&
                                         opmode != RS485_4WIRE_MODE)
                                 return -EFAULT;
+			if(sport->mode == opmode)
+				return 0;
+
 			sport->mode = opmode;
 			switch(opmode)
 			{
@@ -1768,8 +1772,8 @@ static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg
 				imx_moxa_ioThinx4530_uart_rs232_mode(sport);
 				break;
 			}
-
-                }else {
+                }
+		else {
 			opmode = sport->mode;
 			if (put_user(opmode, (int __user *)argp))
 				return -EFAULT;
@@ -2163,21 +2167,24 @@ static int serial_imx_probe(struct platform_device *pdev)
 	sport->timer.data     = (unsigned long)sport;
 
 #ifdef CONFIG_MACH_MOXA_IOTHINX4530
-	sport->mode =  RS485_2WIRE_MODE;
-	init_timer(&sport->rs485_timer);
-	sport->rs485_timer.function = imx_moxa_uart485_tx_inactive;
-	sport->rs485_timer.data     = (unsigned long)sport;
+	if(sport->have_multimode)
+	{
+		sport->mode =  RS485_2WIRE_MODE;
+		init_timer(&sport->rs485_timer);
+		sport->rs485_timer.function = imx_moxa_uart485_tx_inactive;
+		sport->rs485_timer.data     = (unsigned long)sport;
 
-	if(sport->have_multimode && !sport->rs485_p1)
-		sport->gpios = gshare_gpios;
-	else{
+		sport->gpios = mctrl_gpio_init(&sport->port, 0);
+		if (IS_ERR(sport->gpios))
+			return PTR_ERR(sport->gpios);
+
+		if(sport->rs485_p1)
+			gshare_gpios = sport->gpios;
+	}else {
 		sport->gpios = mctrl_gpio_init(&sport->port, 0);
 		if (IS_ERR(sport->gpios))
 			return PTR_ERR(sport->gpios);
 	}
-
-	if(sport->have_multimode && sport->rs485_p1)
-		gshare_gpios = sport->gpios;
 #else
 	sport->gpios = mctrl_gpio_init(&sport->port, 0);
 	if (IS_ERR(sport->gpios))
