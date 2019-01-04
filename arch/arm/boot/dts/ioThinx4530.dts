@@ -145,7 +145,7 @@
 	assigned-clock-rates = <0>, <100000000>;
 	phy-mode = "rmii";
 	phy-reset-gpios = <&gpio1 2 GPIO_ACTIVE_HIGH>;
-	local-mac-address = [00 04 9F 01 1B B9];
+	//local-mac-address = [00 04 9F 01 1B B9];
 	fsl,magic-packet;
 	status = "okay";
 	label = "fec";
@@ -184,7 +184,7 @@
 	assigned-clock-parents = <&clks IMX7D_PLL_ENET_MAIN_100M_CLK>;
 	assigned-clock-rates = <0>, <100000000>;
 	phy-mode = "rmii";
-	local-mac-address = [00 04 9F 01 1B B8];
+	//local-mac-address = [00 04 9F 01 1B B8];
 	fsl,magic-packet;
 	status = "okay";
 	phy-handle = <&ethphy0>;
@@ -492,7 +492,7 @@
 		led_sd {
                         label = "sd-led";
                         gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
-			linux,default-trigger = "mmc1";
+			linux,default-trigger = "mmc0";
 		};
 
 		led_u1_g {
