@@ -1755,9 +1755,6 @@ static int imx_ioctl(struct uart_port *port, unsigned int cmd, unsigned long arg
                                         opmode != RS422_MODE &&
                                         opmode != RS485_4WIRE_MODE)
                                 return -EFAULT;
-			if(sport->mode == opmode)
-				return 0;
-
 			sport->mode = opmode;
 			switch(opmode)
 			{
