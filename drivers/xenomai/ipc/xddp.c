@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/ipc/xddp.c
+../../../../xenomai/kernel/drivers/ipc/xddp.c

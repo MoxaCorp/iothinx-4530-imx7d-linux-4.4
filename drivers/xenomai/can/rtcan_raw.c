@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/can/rtcan_raw.c
+../../../../xenomai/kernel/drivers/can/rtcan_raw.c

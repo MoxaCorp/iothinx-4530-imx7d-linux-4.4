@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/registry.h
+../../../../../xenomai/include/cobalt/kernel/registry.h

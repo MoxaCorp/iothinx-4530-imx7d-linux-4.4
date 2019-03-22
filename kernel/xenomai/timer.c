@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/timer.c
+../../../xenomai/kernel/cobalt/timer.c

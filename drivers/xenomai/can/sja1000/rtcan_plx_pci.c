@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/can/sja1000/rtcan_plx_pci.c
+../../../../../xenomai/kernel/drivers/can/sja1000/rtcan_plx_pci.c

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/rtdm/analogy/transfer.h
+../../../../../xenomai/include/cobalt/kernel/rtdm/analogy/transfer.h

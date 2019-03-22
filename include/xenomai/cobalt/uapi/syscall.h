@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/syscall.h
+../../../../../xenomai/include/cobalt/uapi/syscall.h

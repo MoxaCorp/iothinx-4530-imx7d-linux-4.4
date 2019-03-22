@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtdev_mgr.h
+../../../../../../xenomai/kernel/drivers/net/stack/include/rtdev_mgr.h

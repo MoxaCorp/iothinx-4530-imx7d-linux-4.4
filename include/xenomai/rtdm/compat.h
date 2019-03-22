@@ -1,1 +1,1 @@
-../../../../xenomai-3/include/cobalt/kernel/rtdm/compat.h
+../../../../xenomai/include/cobalt/kernel/rtdm/compat.h

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/stack/iovec.c
+../../../../../xenomai/kernel/drivers/net/stack/iovec.c

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/analogy/driver_facilities.c
+../../../../xenomai/kernel/drivers/analogy/driver_facilities.c

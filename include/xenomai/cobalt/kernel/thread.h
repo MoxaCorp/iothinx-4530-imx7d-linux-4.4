@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/thread.h
+../../../../../xenomai/include/cobalt/kernel/thread.h

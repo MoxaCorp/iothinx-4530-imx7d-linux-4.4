@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/time.h
+../../../../../xenomai/include/cobalt/uapi/time.h

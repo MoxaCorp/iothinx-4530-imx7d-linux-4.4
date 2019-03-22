@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/fec.c
+../../../../../xenomai/kernel/drivers/net/drivers/fec.c

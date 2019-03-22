@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/drivers/experimental/e1000/e1000.h
+../../../../../../../xenomai/kernel/drivers/net/drivers/experimental/e1000/e1000.h

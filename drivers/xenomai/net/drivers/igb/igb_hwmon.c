@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/igb/igb_hwmon.c
+../../../../../../xenomai/kernel/drivers/net/drivers/igb/igb_hwmon.c

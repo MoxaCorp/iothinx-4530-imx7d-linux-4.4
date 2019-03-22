@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtmac/rtmac_disc.h
+../../../../../../../xenomai/kernel/drivers/net/stack/include/rtmac/rtmac_disc.h

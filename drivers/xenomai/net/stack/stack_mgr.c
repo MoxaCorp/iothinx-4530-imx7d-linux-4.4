@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/stack/stack_mgr.c
+../../../../../xenomai/kernel/drivers/net/stack/stack_mgr.c

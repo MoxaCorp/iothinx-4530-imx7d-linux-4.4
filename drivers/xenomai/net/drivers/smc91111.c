@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/smc91111.c
+../../../../../xenomai/kernel/drivers/net/drivers/smc91111.c

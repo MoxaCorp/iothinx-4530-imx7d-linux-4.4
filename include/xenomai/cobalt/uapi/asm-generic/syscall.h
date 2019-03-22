@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/include/cobalt/uapi/asm-generic/syscall.h
+../../../../../../xenomai/include/cobalt/uapi/asm-generic/syscall.h

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/io.h
+../../../../xenomai/kernel/cobalt/posix/io.h

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/national_instruments/pcimio.c
+../../../../../xenomai/kernel/drivers/analogy/national_instruments/pcimio.c

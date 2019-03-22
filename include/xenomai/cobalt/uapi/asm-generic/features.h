@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/include/cobalt/uapi/asm-generic/features.h
+../../../../../../xenomai/include/cobalt/uapi/asm-generic/features.h

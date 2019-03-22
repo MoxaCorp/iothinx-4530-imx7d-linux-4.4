@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/include/asm-generic/xenomai/mayday.h
+../../../../xenomai/kernel/cobalt/include/asm-generic/xenomai/mayday.h

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/stack/rtnet_rtpc.c
+../../../../../xenomai/kernel/drivers/net/stack/rtnet_rtpc.c

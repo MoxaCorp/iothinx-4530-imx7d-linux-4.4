@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/drivers/experimental/rt2500/rt2x00.h
+../../../../../../../xenomai/kernel/drivers/net/drivers/experimental/rt2500/rt2x00.h

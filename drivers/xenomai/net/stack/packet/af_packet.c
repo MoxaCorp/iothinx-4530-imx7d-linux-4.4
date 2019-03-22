@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/packet/af_packet.c
+../../../../../../xenomai/kernel/drivers/net/stack/packet/af_packet.c

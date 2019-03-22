@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/sched.c
+../../../xenomai/kernel/cobalt/sched.c

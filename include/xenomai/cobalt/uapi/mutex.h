@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/mutex.h
+../../../../../xenomai/include/cobalt/uapi/mutex.h

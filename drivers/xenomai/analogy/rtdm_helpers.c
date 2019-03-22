@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/analogy/rtdm_helpers.c
+../../../../xenomai/kernel/drivers/analogy/rtdm_helpers.c

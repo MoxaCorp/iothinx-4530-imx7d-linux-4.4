@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/monitor.h
+../../../../../xenomai/include/cobalt/uapi/monitor.h

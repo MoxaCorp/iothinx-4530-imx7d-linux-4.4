@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/rtdm/uapi/ipc.h
+../../../../../xenomai/include/rtdm/uapi/ipc.h

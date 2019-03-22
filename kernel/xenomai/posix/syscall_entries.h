@@ -1,6 +1,7 @@
 #define __COBALT_CALL_ENTRIES \
 	__COBALT_CALL_ENTRY(migrate) \
 	__COBALT_CALL_ENTRY(trace) \
+	__COBALT_CALL_ENTRY(ftrace_puts) \
 	__COBALT_CALL_ENTRY(archcall) \
 	__COBALT_CALL_ENTRY(get_current) \
 	__COBALT_CALL_ENTRY(backtrace) \
@@ -8,6 +9,18 @@
 	__COBALT_CALL_ENTRY(mayday) \
 	__COBALT_CALL_ENTRY(bind) \
 	__COBALT_CALL_ENTRY(extend) \
+	__COBALT_CALL_ENTRY(mutex_check_init) \
+	__COBALT_CALL_ENTRY(mutex_init) \
+	__COBALT_CALL_ENTRY(mutex_destroy) \
+	__COBALT_CALL_ENTRY(mutex_trylock) \
+	__COBALT_CALL_ENTRY(mutex_lock) \
+	__COBALT_CALL_ENTRY(mutex_timedlock) \
+	__COBALT_CALL_ENTRY(mutex_unlock) \
+	__COBALT_CALL_ENTRY(event_init) \
+	__COBALT_CALL_ENTRY(event_wait) \
+	__COBALT_CALL_ENTRY(event_sync) \
+	__COBALT_CALL_ENTRY(event_destroy) \
+	__COBALT_CALL_ENTRY(event_inquire) \
 	__COBALT_CALL_ENTRY(timerfd_create) \
 	__COBALT_CALL_ENTRY(timerfd_settime) \
 	__COBALT_CALL_ENTRY(timerfd_gettime) \
@@ -19,20 +32,11 @@
 	__COBALT_CALL_ENTRY(read) \
 	__COBALT_CALL_ENTRY(write) \
 	__COBALT_CALL_ENTRY(recvmsg) \
+	__COBALT_CALL_ENTRY(recvmmsg) \
 	__COBALT_CALL_ENTRY(sendmsg) \
+	__COBALT_CALL_ENTRY(sendmmsg) \
 	__COBALT_CALL_ENTRY(mmap) \
 	__COBALT_CALL_ENTRY(select) \
-	__COBALT_CALL_ENTRY(clock_getres) \
-	__COBALT_CALL_ENTRY(clock_gettime) \
-	__COBALT_CALL_ENTRY(clock_settime) \
-	__COBALT_CALL_ENTRY(clock_nanosleep) \
-	__COBALT_CALL_ENTRY(mutex_check_init) \
-	__COBALT_CALL_ENTRY(mutex_init) \
-	__COBALT_CALL_ENTRY(mutex_destroy) \
-	__COBALT_CALL_ENTRY(mutex_trylock) \
-	__COBALT_CALL_ENTRY(mutex_lock) \
-	__COBALT_CALL_ENTRY(mutex_timedlock) \
-	__COBALT_CALL_ENTRY(mutex_unlock) \
 	__COBALT_CALL_ENTRY(sched_minprio) \
 	__COBALT_CALL_ENTRY(sched_maxprio) \
 	__COBALT_CALL_ENTRY(sched_yield) \
@@ -58,10 +62,6 @@
 	__COBALT_CALL_ENTRY(mq_timedsend) \
 	__COBALT_CALL_ENTRY(mq_timedreceive) \
 	__COBALT_CALL_ENTRY(corectl) \
-	__COBALT_CALL_ENTRY(cond_init) \
-	__COBALT_CALL_ENTRY(cond_destroy) \
-	__COBALT_CALL_ENTRY(cond_wait_prologue) \
-	__COBALT_CALL_ENTRY(cond_wait_epilogue) \
 	__COBALT_CALL_ENTRY(sem_open) \
 	__COBALT_CALL_ENTRY(sem_close) \
 	__COBALT_CALL_ENTRY(sem_unlink) \
@@ -71,11 +71,15 @@
 	__COBALT_CALL_ENTRY(monitor_sync) \
 	__COBALT_CALL_ENTRY(monitor_exit) \
 	__COBALT_CALL_ENTRY(monitor_destroy) \
-	__COBALT_CALL_ENTRY(event_init) \
-	__COBALT_CALL_ENTRY(event_wait) \
-	__COBALT_CALL_ENTRY(event_sync) \
-	__COBALT_CALL_ENTRY(event_destroy) \
-	__COBALT_CALL_ENTRY(event_inquire) \
+	__COBALT_CALL_ENTRY(clock_getres) \
+	__COBALT_CALL_ENTRY(clock_gettime) \
+	__COBALT_CALL_ENTRY(clock_settime) \
+	__COBALT_CALL_ENTRY(clock_adjtime) \
+	__COBALT_CALL_ENTRY(clock_nanosleep) \
+	__COBALT_CALL_ENTRY(cond_init) \
+	__COBALT_CALL_ENTRY(cond_destroy) \
+	__COBALT_CALL_ENTRY(cond_wait_prologue) \
+	__COBALT_CALL_ENTRY(cond_wait_epilogue) \
 	__COBALT_CALL_ENTRY(sigwait) \
 	__COBALT_CALL_ENTRY(sigtimedwait) \
 	__COBALT_CALL_ENTRY(sigwaitinfo) \
@@ -100,6 +104,7 @@
 #define __COBALT_CALL_MODES \
 	__COBALT_MODE(migrate, current) \
 	__COBALT_MODE(trace, current) \
+	__COBALT_MODE(ftrace_puts, current) \
 	__COBALT_MODE(archcall, current) \
 	__COBALT_MODE(get_current, current) \
 	__COBALT_MODE(backtrace, lostage) \
@@ -107,6 +112,18 @@
 	__COBALT_MODE(mayday, current) \
 	__COBALT_MODE(bind, lostage) \
 	__COBALT_MODE(extend, lostage) \
+	__COBALT_MODE(mutex_check_init, current) \
+	__COBALT_MODE(mutex_init, current) \
+	__COBALT_MODE(mutex_destroy, current) \
+	__COBALT_MODE(mutex_trylock, primary) \
+	__COBALT_MODE(mutex_lock, primary) \
+	__COBALT_MODE(mutex_timedlock, primary) \
+	__COBALT_MODE(mutex_unlock, nonrestartable) \
+	__COBALT_MODE(event_init, current) \
+	__COBALT_MODE(event_wait, primary) \
+	__COBALT_MODE(event_sync, current) \
+	__COBALT_MODE(event_destroy, current) \
+	__COBALT_MODE(event_inquire, current) \
 	__COBALT_MODE(timerfd_create, lostage) \
 	__COBALT_MODE(timerfd_settime, primary) \
 	__COBALT_MODE(timerfd_gettime, current) \
@@ -118,20 +135,11 @@
 	__COBALT_MODE(read, handover) \
 	__COBALT_MODE(write, handover) \
 	__COBALT_MODE(recvmsg, handover) \
+	__COBALT_MODE(recvmmsg, primary) \
 	__COBALT_MODE(sendmsg, handover) \
+	__COBALT_MODE(sendmmsg, primary) \
 	__COBALT_MODE(mmap, lostage) \
 	__COBALT_MODE(select, primary) \
-	__COBALT_MODE(clock_getres, current) \
-	__COBALT_MODE(clock_gettime, current) \
-	__COBALT_MODE(clock_settime, current) \
-	__COBALT_MODE(clock_nanosleep, primary) \
-	__COBALT_MODE(mutex_check_init, current) \
-	__COBALT_MODE(mutex_init, current) \
-	__COBALT_MODE(mutex_destroy, current) \
-	__COBALT_MODE(mutex_trylock, primary) \
-	__COBALT_MODE(mutex_lock, primary) \
-	__COBALT_MODE(mutex_timedlock, primary) \
-	__COBALT_MODE(mutex_unlock, nonrestartable) \
 	__COBALT_MODE(sched_minprio, current) \
 	__COBALT_MODE(sched_maxprio, current) \
 	__COBALT_MODE(sched_yield, primary) \
@@ -157,10 +165,6 @@
 	__COBALT_MODE(mq_timedsend, primary) \
 	__COBALT_MODE(mq_timedreceive, primary) \
 	__COBALT_MODE(corectl, probing) \
-	__COBALT_MODE(cond_init, current) \
-	__COBALT_MODE(cond_destroy, current) \
-	__COBALT_MODE(cond_wait_prologue, nonrestartable) \
-	__COBALT_MODE(cond_wait_epilogue, primary) \
 	__COBALT_MODE(sem_open, lostage) \
 	__COBALT_MODE(sem_close, lostage) \
 	__COBALT_MODE(sem_unlink, lostage) \
@@ -170,11 +174,15 @@
 	__COBALT_MODE(monitor_sync, nonrestartable) \
 	__COBALT_MODE(monitor_exit, primary) \
 	__COBALT_MODE(monitor_destroy, primary) \
-	__COBALT_MODE(event_init, current) \
-	__COBALT_MODE(event_wait, primary) \
-	__COBALT_MODE(event_sync, current) \
-	__COBALT_MODE(event_destroy, current) \
-	__COBALT_MODE(event_inquire, current) \
+	__COBALT_MODE(clock_getres, current) \
+	__COBALT_MODE(clock_gettime, current) \
+	__COBALT_MODE(clock_settime, current) \
+	__COBALT_MODE(clock_adjtime, current) \
+	__COBALT_MODE(clock_nanosleep, primary) \
+	__COBALT_MODE(cond_init, current) \
+	__COBALT_MODE(cond_destroy, current) \
+	__COBALT_MODE(cond_wait_prologue, nonrestartable) \
+	__COBALT_MODE(cond_wait_epilogue, primary) \
 	__COBALT_MODE(sigwait, primary) \
 	__COBALT_MODE(sigtimedwait, nonrestartable) \
 	__COBALT_MODE(sigwaitinfo, nonrestartable) \

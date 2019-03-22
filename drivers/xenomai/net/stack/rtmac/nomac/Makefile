@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/rtmac/nomac/Makefile
+../../../../../../../xenomai/kernel/drivers/net/stack/rtmac/nomac/Makefile

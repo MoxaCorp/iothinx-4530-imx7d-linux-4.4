@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/corectl.h
+../../../../xenomai/kernel/cobalt/posix/corectl.h

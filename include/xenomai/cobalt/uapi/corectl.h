@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/corectl.h
+../../../../../xenomai/include/cobalt/uapi/corectl.h

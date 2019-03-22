@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/gen-syscall-entries.sh
+../../../../xenomai/kernel/cobalt/posix/gen-syscall-entries.sh

@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/include/cobalt/uapi/kernel/urw.h
+../../../../../../xenomai/include/cobalt/uapi/kernel/urw.h

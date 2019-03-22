@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/mpc8xx_fec.c
+../../../../../xenomai/kernel/drivers/net/drivers/mpc8xx_fec.c

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/trace/cobalt-core.h
+../../../../xenomai/kernel/cobalt/trace/cobalt-core.h

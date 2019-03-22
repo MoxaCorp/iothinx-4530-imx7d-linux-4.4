@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/national_instruments/ni_stc.h
+../../../../../xenomai/kernel/drivers/analogy/national_instruments/ni_stc.h

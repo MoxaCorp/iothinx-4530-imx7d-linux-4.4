@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/serial/16550A_pnp.h
+../../../../xenomai/kernel/drivers/serial/16550A_pnp.h

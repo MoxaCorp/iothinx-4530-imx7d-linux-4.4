@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/stack/rtwlan.c
+../../../../../xenomai/kernel/drivers/net/stack/rtwlan.c

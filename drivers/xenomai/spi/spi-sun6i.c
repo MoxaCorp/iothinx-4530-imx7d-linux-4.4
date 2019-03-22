@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/spi/spi-sun6i.c
+../../../../xenomai/kernel/drivers/spi/spi-sun6i.c

@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/include/ipv4/af_inet.h
+../../../../../../../xenomai/kernel/drivers/net/stack/include/ipv4/af_inet.h

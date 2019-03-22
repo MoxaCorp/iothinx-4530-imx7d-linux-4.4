@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/sched-sporadic.c
+../../../xenomai/kernel/cobalt/sched-sporadic.c

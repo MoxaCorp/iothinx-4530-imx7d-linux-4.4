@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/include/ethernet/eth.h
+../../../../../../../xenomai/kernel/drivers/net/stack/include/ethernet/eth.h

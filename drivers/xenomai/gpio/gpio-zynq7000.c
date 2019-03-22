@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/gpio/gpio-zynq7000.c
+../../../../xenomai/kernel/drivers/gpio/gpio-zynq7000.c

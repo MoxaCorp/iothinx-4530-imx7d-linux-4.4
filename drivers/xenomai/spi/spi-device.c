@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/spi/spi-device.c
+../../../../xenomai/kernel/drivers/spi/spi-device.c

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/intel/parport.c
+../../../../../xenomai/kernel/drivers/analogy/intel/parport.c

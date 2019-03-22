@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/testing/timerbench.c
+../../../../xenomai/kernel/drivers/testing/timerbench.c

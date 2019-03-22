@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/eepro100.c
+../../../../../xenomai/kernel/drivers/net/drivers/eepro100.c

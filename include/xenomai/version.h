@@ -1,1 +1,1 @@
-../../../xenomai-3/include/xenomai/version.h
+../../../xenomai/include/xenomai/version.h

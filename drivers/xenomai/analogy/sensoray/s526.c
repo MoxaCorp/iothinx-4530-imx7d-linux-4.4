@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/sensoray/s526.c
+../../../../../xenomai/kernel/drivers/analogy/sensoray/s526.c

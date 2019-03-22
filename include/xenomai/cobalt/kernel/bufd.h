@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/bufd.h
+../../../../../xenomai/include/cobalt/kernel/bufd.h

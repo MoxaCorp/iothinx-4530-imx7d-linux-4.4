@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/addons/Makefile
+../../../../../xenomai/kernel/drivers/net/addons/Makefile

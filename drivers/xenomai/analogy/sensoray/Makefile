@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/sensoray/Makefile
+../../../../../xenomai/kernel/drivers/analogy/sensoray/Makefile

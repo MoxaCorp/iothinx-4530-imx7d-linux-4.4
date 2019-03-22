@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/core.c
+../../../../xenomai/kernel/cobalt/rtdm/core.c

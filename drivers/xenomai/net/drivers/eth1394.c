@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/eth1394.c
+../../../../../xenomai/kernel/drivers/net/drivers/eth1394.c

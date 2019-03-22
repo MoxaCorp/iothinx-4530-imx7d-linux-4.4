@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/ppd.h
+../../../../../xenomai/include/cobalt/kernel/ppd.h

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/spi/spi-master.c
+../../../../xenomai/kernel/drivers/spi/spi-master.c

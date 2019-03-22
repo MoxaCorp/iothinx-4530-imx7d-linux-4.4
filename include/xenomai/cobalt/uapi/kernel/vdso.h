@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/include/cobalt/uapi/kernel/vdso.h
+../../../../../../xenomai/include/cobalt/uapi/kernel/vdso.h

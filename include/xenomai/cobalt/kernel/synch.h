@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/synch.h
+../../../../../xenomai/include/cobalt/kernel/synch.h

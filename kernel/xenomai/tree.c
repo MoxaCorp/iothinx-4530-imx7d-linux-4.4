@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/tree.c
+../../../xenomai/kernel/cobalt/tree.c

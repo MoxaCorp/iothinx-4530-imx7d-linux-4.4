@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/analogy/proc.h
+../../../../xenomai/kernel/drivers/analogy/proc.h

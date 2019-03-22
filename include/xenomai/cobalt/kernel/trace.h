@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/trace.h
+../../../../../xenomai/include/cobalt/kernel/trace.h

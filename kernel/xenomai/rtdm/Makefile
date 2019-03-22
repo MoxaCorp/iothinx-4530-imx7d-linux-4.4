@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/Makefile
+../../../../xenomai/kernel/cobalt/rtdm/Makefile

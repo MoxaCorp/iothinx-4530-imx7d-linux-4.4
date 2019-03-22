@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/ipv4/ip_sock.c
+../../../../../../xenomai/kernel/drivers/net/stack/ipv4/ip_sock.c

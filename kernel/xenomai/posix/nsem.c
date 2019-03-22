@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/nsem.c
+../../../../xenomai/kernel/cobalt/posix/nsem.c

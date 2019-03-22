@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/ipv4/udp/Makefile
+../../../../../../../xenomai/kernel/drivers/net/stack/ipv4/udp/Makefile

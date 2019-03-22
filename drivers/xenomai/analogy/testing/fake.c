@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/testing/fake.c
+../../../../../xenomai/kernel/drivers/analogy/testing/fake.c

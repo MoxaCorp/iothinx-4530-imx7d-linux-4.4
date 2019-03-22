@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/include/tdma_chrdev.h
+../../../../../../xenomai/kernel/drivers/net/stack/include/tdma_chrdev.h

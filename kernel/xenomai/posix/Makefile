@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/Makefile
+../../../../xenomai/kernel/cobalt/posix/Makefile

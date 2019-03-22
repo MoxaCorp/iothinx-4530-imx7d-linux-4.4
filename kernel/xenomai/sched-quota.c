@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/sched-quota.c
+../../../xenomai/kernel/cobalt/sched-quota.c

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/analogy/device.c
+../../../../xenomai/kernel/drivers/analogy/device.c

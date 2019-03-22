@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/national_instruments/ni_670x.c
+../../../../../xenomai/kernel/drivers/analogy/national_instruments/ni_670x.c

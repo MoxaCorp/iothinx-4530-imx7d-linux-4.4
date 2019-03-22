@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/pipe.c
+../../../xenomai/kernel/cobalt/pipe.c

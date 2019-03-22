@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/testing/rtdmtest.c
+../../../../xenomai/kernel/drivers/testing/rtdmtest.c

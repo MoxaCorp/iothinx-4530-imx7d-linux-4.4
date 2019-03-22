@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/tulip/tulip.h
+../../../../../../xenomai/kernel/drivers/net/drivers/tulip/tulip.h

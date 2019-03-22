@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/udd/Makefile
+../../../../xenomai/kernel/drivers/udd/Makefile

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/ipc/Makefile
+../../../../xenomai/kernel/drivers/ipc/Makefile

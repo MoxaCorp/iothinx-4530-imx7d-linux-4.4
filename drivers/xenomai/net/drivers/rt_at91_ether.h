@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/rt_at91_ether.h
+../../../../../xenomai/kernel/drivers/net/drivers/rt_at91_ether.h

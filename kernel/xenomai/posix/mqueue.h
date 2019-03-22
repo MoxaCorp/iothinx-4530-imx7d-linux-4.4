@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/mqueue.h
+../../../../xenomai/kernel/cobalt/posix/mqueue.h

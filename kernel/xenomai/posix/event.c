@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/event.c
+../../../../xenomai/kernel/cobalt/posix/event.c

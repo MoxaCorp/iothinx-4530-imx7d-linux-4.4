@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/lock.h
+../../../../../xenomai/include/cobalt/kernel/lock.h

@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/tulip/21142.c
+../../../../../../xenomai/kernel/drivers/net/drivers/tulip/21142.c

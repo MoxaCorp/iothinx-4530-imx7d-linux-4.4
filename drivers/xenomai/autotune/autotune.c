@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/autotune/autotune.c
+../../../../xenomai/kernel/drivers/autotune/autotune.c

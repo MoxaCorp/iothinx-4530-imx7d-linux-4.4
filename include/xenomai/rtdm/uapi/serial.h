@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/rtdm/uapi/serial.h
+../../../../../xenomai/include/rtdm/uapi/serial.h

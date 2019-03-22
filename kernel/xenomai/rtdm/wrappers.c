@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/wrappers.c
+../../../../xenomai/kernel/cobalt/rtdm/wrappers.c

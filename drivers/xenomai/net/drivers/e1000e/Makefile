@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/e1000e/Makefile
+../../../../../../xenomai/kernel/drivers/net/drivers/e1000e/Makefile

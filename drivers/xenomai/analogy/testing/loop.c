@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/testing/loop.c
+../../../../../xenomai/kernel/drivers/analogy/testing/loop.c

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/arch/arm/switch.S
+../../../../xenomai/kernel/cobalt/arch/arm/switch.S

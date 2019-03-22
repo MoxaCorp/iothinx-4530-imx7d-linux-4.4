@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/e1000/e1000_osdep.h
+../../../../../../xenomai/kernel/drivers/net/drivers/e1000/e1000_osdep.h

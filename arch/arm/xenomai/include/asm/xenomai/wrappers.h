@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/cobalt/arch/arm/include/asm/xenomai/wrappers.h
+../../../../../../../xenomai/kernel/cobalt/arch/arm/include/asm/xenomai/wrappers.h

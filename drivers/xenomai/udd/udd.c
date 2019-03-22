@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/udd/udd.c
+../../../../xenomai/kernel/drivers/udd/udd.c

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/rtdm/analogy/context.h
+../../../../../xenomai/include/cobalt/kernel/rtdm/analogy/context.h

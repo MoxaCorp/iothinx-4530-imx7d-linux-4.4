@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/serial/16550A.c
+../../../../xenomai/kernel/drivers/serial/16550A.c

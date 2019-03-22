@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/rtdm/uapi/analogy.h
+../../../../../xenomai/include/rtdm/uapi/analogy.h

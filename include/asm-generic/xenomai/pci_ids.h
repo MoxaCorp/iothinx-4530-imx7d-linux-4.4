@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/include/asm-generic/xenomai/pci_ids.h
+../../../../xenomai/kernel/cobalt/include/asm-generic/xenomai/pci_ids.h

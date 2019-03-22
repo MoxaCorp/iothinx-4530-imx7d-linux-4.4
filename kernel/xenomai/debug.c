@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/debug.c
+../../../xenomai/kernel/cobalt/debug.c

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/map.h
+../../../../../xenomai/include/cobalt/kernel/map.h

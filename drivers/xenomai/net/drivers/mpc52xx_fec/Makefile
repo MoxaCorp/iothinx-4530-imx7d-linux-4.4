@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/mpc52xx_fec/Makefile
+../../../../../../xenomai/kernel/drivers/net/drivers/mpc52xx_fec/Makefile

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/can/mscan/rtcan_mscan_mpc5xxx.c
+../../../../../xenomai/kernel/drivers/can/mscan/rtcan_mscan_mpc5xxx.c

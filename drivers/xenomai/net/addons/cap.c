@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/addons/cap.c
+../../../../../xenomai/kernel/drivers/net/addons/cap.c

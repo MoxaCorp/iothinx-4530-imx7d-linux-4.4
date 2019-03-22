@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/testing/Makefile
+../../../../../xenomai/kernel/drivers/analogy/testing/Makefile

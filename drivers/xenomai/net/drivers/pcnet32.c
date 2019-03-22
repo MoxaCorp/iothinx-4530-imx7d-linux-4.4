@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/pcnet32.c
+../../../../../xenomai/kernel/drivers/net/drivers/pcnet32.c

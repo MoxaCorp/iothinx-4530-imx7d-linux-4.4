@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/lock.c
+../../../xenomai/kernel/cobalt/lock.c

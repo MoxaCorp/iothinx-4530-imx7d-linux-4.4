@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/mutex.h
+../../../../xenomai/kernel/cobalt/posix/mutex.h

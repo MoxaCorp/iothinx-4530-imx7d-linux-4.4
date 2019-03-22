@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtcfg/rtcfg_proc.h
+../../../../../../../xenomai/kernel/drivers/net/stack/include/rtcfg/rtcfg_proc.h

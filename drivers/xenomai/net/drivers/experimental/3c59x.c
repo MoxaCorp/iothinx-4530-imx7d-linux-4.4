@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/experimental/3c59x.c
+../../../../../../xenomai/kernel/drivers/net/drivers/experimental/3c59x.c

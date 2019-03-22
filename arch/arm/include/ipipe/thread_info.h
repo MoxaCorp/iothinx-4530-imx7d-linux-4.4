@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/cobalt/include/ipipe/thread_info.h
+../../../../../xenomai/kernel/cobalt/include/ipipe/thread_info.h

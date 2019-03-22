@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/arith.c
+../../../xenomai/kernel/cobalt/arith.c

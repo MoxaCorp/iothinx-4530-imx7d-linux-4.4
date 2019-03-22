@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/intel/Makefile
+../../../../../xenomai/kernel/drivers/analogy/intel/Makefile

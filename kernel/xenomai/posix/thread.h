@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/thread.h
+../../../../xenomai/kernel/cobalt/posix/thread.h

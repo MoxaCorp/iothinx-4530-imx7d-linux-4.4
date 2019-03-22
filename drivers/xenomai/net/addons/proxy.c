@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/addons/proxy.c
+../../../../../xenomai/kernel/drivers/net/addons/proxy.c

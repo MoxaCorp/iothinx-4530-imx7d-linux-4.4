@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/cond.h
+../../../../../xenomai/include/cobalt/uapi/cond.h

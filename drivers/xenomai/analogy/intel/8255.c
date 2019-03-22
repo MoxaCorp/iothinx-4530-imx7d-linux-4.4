@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/analogy/intel/8255.c
+../../../../../xenomai/kernel/drivers/analogy/intel/8255.c

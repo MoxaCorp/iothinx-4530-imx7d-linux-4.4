@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/apc.h
+../../../../../xenomai/include/cobalt/kernel/apc.h

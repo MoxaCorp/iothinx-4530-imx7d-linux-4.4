@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/can/sja1000/Makefile
+../../../../../xenomai/kernel/drivers/can/sja1000/Makefile

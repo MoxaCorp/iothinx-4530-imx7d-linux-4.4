@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/gpio/Makefile
+../../../../xenomai/kernel/drivers/gpio/Makefile

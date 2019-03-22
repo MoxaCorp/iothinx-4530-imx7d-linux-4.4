@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/rtcfg/rtcfg_frame.c
+../../../../../../xenomai/kernel/drivers/net/stack/rtcfg/rtcfg_frame.c

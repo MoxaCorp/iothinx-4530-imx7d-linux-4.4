@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/gpio/gpio-core.c
+../../../../xenomai/kernel/drivers/gpio/gpio-core.c

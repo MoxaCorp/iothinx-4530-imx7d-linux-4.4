@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/arch/arm/machine.c
+../../../../xenomai/kernel/cobalt/arch/arm/machine.c

@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/rtcfg/rtcfg_conn_event.c
+../../../../../../xenomai/kernel/drivers/net/stack/rtcfg/rtcfg_conn_event.c

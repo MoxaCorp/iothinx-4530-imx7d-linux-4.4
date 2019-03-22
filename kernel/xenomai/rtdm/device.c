@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/device.c
+../../../../xenomai/kernel/cobalt/rtdm/device.c

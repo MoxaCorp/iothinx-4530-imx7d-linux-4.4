@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtmac/rtmac_proto.h
+../../../../../../../xenomai/kernel/drivers/net/stack/include/rtmac/rtmac_proto.h

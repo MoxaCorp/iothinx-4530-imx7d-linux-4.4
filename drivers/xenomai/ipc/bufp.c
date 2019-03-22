@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/ipc/bufp.c
+../../../../xenomai/kernel/drivers/ipc/bufp.c

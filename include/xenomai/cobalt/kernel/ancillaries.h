@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/ancillaries.h
+../../../../../xenomai/include/cobalt/kernel/ancillaries.h

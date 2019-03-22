@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/rtcfg/Makefile
+../../../../../../xenomai/kernel/drivers/net/stack/rtcfg/Makefile

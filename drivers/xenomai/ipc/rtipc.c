@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/ipc/rtipc.c
+../../../../xenomai/kernel/drivers/ipc/rtipc.c

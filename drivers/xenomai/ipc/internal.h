@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/ipc/internal.h
+../../../../xenomai/kernel/drivers/ipc/internal.h

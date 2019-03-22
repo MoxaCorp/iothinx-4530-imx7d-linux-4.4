@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/testing/switchtest.c
+../../../../xenomai/kernel/drivers/testing/switchtest.c

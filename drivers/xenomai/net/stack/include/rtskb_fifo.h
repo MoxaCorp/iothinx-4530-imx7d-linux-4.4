@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtskb_fifo.h
+../../../../../../xenomai/kernel/drivers/net/stack/include/rtskb_fifo.h

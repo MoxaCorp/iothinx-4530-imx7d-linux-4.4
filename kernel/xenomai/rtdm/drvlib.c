@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/drvlib.c
+../../../../xenomai/kernel/cobalt/rtdm/drvlib.c

@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/serial/mpc52xx_uart.c
+../../../../xenomai/kernel/drivers/serial/mpc52xx_uart.c

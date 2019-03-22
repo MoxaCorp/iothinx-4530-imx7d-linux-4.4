@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/gpio/gpio-bcm2835.c
+../../../../xenomai/kernel/drivers/gpio/gpio-bcm2835.c

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/sched-tp.h
+../../../../../xenomai/include/cobalt/kernel/sched-tp.h

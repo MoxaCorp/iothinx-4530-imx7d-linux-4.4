@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/ipv4/protocol.c
+../../../../../../xenomai/kernel/drivers/net/stack/ipv4/protocol.c

@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/sched-weak.c
+../../../xenomai/kernel/cobalt/sched-weak.c

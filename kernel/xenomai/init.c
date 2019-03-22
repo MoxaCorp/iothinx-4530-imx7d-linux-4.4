@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/init.c
+../../../xenomai/kernel/cobalt/init.c

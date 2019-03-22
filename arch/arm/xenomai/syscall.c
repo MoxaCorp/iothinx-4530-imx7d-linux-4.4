@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/arch/arm/syscall.c
+../../../../xenomai/kernel/cobalt/arch/arm/syscall.c

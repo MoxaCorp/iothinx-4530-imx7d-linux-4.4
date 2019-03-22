@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/tulip/eeprom.c
+../../../../../../xenomai/kernel/drivers/net/drivers/tulip/eeprom.c

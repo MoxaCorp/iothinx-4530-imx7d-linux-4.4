@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/bufd.c
+../../../xenomai/kernel/cobalt/bufd.c

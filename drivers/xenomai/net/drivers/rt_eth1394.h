@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/rt_eth1394.h
+../../../../../xenomai/kernel/drivers/net/drivers/rt_eth1394.h

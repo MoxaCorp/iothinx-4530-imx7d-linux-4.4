@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/spi/Makefile
+../../../../xenomai/kernel/drivers/spi/Makefile

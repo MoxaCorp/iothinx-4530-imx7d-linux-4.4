@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/sem.h
+../../../../../xenomai/include/cobalt/uapi/sem.h

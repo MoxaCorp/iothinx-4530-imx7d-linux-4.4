@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/procfs.c
+../../../xenomai/kernel/cobalt/procfs.c

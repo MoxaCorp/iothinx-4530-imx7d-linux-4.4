@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/rtdm/uapi/autotune.h
+../../../../../xenomai/include/rtdm/uapi/autotune.h

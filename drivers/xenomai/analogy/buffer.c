@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/drivers/analogy/buffer.c
+../../../../xenomai/kernel/drivers/analogy/buffer.c

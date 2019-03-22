@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/clock.h
+../../../../../xenomai/include/cobalt/kernel/clock.h

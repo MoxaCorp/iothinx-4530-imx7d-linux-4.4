@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/registry.c
+../../../xenomai/kernel/cobalt/registry.c

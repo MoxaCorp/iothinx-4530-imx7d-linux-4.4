@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/drivers/igb/e1000_nvm.c
+../../../../../../xenomai/kernel/drivers/net/drivers/igb/e1000_nvm.c

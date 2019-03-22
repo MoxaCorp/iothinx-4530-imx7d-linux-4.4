@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/select.h
+../../../../../xenomai/include/cobalt/kernel/select.h

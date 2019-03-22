@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/can/mscan/Makefile
+../../../../../xenomai/kernel/drivers/can/mscan/Makefile

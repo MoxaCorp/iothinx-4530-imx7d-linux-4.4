@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/schedparam.h
+../../../../../xenomai/include/cobalt/kernel/schedparam.h

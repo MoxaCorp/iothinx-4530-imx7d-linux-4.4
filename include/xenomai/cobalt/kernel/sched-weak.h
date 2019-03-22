@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/sched-weak.h
+../../../../../xenomai/include/cobalt/kernel/sched-weak.h

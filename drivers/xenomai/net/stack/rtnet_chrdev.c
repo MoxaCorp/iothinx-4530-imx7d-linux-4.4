@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/stack/rtnet_chrdev.c
+../../../../../xenomai/kernel/drivers/net/stack/rtnet_chrdev.c

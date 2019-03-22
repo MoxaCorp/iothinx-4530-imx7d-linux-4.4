@@ -1,1 +1,1 @@
-../../../../../../xenomai-3/kernel/drivers/net/stack/rtmac/rtmac_vnic.c
+../../../../../../xenomai/kernel/drivers/net/stack/rtmac/rtmac_vnic.c

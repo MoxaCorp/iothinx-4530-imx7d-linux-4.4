@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/rtdm/internal.h
+../../../../xenomai/kernel/cobalt/rtdm/internal.h

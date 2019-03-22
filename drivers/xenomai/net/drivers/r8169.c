@@ -1,1 +1,1 @@
-../../../../../xenomai-3/kernel/drivers/net/drivers/r8169.c
+../../../../../xenomai/kernel/drivers/net/drivers/r8169.c

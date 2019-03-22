@@ -1,1 +1,1 @@
-../../../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtmac/nomac/nomac.h
+../../../../../../../../xenomai/kernel/drivers/net/stack/include/rtmac/nomac/nomac.h

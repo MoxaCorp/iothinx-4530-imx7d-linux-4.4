@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/kernel/pipe.h
+../../../../../xenomai/include/cobalt/kernel/pipe.h

@@ -1,1 +1,1 @@
-../../../../../../../../xenomai-3/kernel/drivers/net/stack/include/rtmac/tdma/tdma_worker.h
+../../../../../../../../xenomai/kernel/drivers/net/stack/include/rtmac/tdma/tdma_worker.h

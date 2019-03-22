@@ -1,1 +1,1 @@
-../../../../xenomai-3/include/cobalt/kernel/rtdm/ipc.h
+../../../../xenomai/include/cobalt/kernel/rtdm/ipc.h

@@ -1,1 +1,1 @@
-../../../../../xenomai-3/include/cobalt/uapi/sched.h
+../../../../../xenomai/include/cobalt/uapi/sched.h

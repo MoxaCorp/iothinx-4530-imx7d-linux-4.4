@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/include/linux/xenomai/wrappers.h
+../../../../xenomai/kernel/cobalt/include/linux/xenomai/wrappers.h

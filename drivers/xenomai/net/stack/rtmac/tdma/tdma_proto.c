@@ -1,1 +1,1 @@
-../../../../../../../xenomai-3/kernel/drivers/net/stack/rtmac/tdma/tdma_proto.c
+../../../../../../../xenomai/kernel/drivers/net/stack/rtmac/tdma/tdma_proto.c

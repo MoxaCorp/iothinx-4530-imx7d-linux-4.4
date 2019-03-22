@@ -1,1 +1,1 @@
-../../../../xenomai-3/kernel/cobalt/posix/cond.c
+../../../../xenomai/kernel/cobalt/posix/cond.c

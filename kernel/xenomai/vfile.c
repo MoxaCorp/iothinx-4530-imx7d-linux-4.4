@@ -1,1 +1,1 @@
-../../../xenomai-3/kernel/cobalt/vfile.c
+../../../xenomai/kernel/cobalt/vfile.c
