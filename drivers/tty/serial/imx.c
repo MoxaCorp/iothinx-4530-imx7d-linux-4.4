@@ -1321,7 +1321,7 @@ static int imx_startup(struct uart_port *port)
 
 #ifdef CONFIG_MACH_MOXA_IOTHINX4530
 	if(sport->have_multimode)
-		imx_moxa_ioThinx4530_uart_rs485_mode(sport);
+		imx_moxa_ioThinx4530_uart_rs232_mode(sport);
 #endif
 	return 0;
 }
@@ -2166,7 +2166,7 @@ static int serial_imx_probe(struct platform_device *pdev)
 #ifdef CONFIG_MACH_MOXA_IOTHINX4530
 	if(sport->have_multimode)
 	{
-		sport->mode =  RS485_2WIRE_MODE;
+		sport->mode = RS232_MODE;
 		init_timer(&sport->rs485_timer);
 		sport->rs485_timer.function = imx_moxa_uart485_tx_inactive;
 		sport->rs485_timer.data     = (unsigned long)sport;
