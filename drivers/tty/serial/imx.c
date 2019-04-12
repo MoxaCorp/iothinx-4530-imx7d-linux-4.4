@@ -1320,8 +1320,10 @@ static int imx_startup(struct uart_port *port)
 	spin_unlock_irqrestore(&sport->port.lock, flags);
 
 #ifdef CONFIG_MACH_MOXA_IOTHINX4530
+#if 0
 	if(sport->have_multimode)
 		imx_moxa_ioThinx4530_uart_rs232_mode(sport);
+#endif
 #endif
 	return 0;
 }
