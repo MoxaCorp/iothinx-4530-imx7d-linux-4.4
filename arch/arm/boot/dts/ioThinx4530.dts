@@ -147,6 +147,8 @@
 	phy-reset-gpios = <&gpio1 2 GPIO_ACTIVE_HIGH>;
 	//local-mac-address = [00 04 9F 01 1B B9];
 	fsl,magic-packet;
+    fsl,num-tx-queues=<1>;
+    fsl,num-rx-queues=<1>;
 	status = "okay";
 	label = "fec";
 
@@ -186,6 +188,8 @@
 	phy-mode = "rmii";
 	//local-mac-address = [00 04 9F 01 1B B8];
 	fsl,magic-packet;
+    fsl,num-tx-queues=<1>;
+    fsl,num-rx-queues=<1>;
 	status = "okay";
 	phy-handle = <&ethphy0>;
 	sphy-handle = <&ethphy2>;
