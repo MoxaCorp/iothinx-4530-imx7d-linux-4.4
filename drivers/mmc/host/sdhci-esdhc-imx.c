@@ -847,7 +847,7 @@ static void esdhc_set_strobe_dll(struct sdhci_host *host)
 			(7 << ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_SHIFT);
 		writel(v, host->ioaddr + ESDHC_STROBE_DLL_CTRL);
 		/* wait 1us to make sure strobe dll status register stable */
-		udelay(1);
+		udelay(15);
 		v = readl(host->ioaddr + ESDHC_STROBE_DLL_STATUS);
 		if (!(v & ESDHC_STROBE_DLL_STS_REF_LOCK))
 			dev_warn(mmc_dev(host->mmc),
