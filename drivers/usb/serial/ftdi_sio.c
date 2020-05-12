@@ -2496,19 +2496,56 @@ static int ftdi_ioctl(struct tty_struct *tty,
 					unsigned int cmd, unsigned long arg)
 {
 	struct usb_serial_port *port = tty->driver_data;
+	struct usb_device *dev = port->serial->dev;
+	struct ftdi_private *priv = usb_get_serial_port_data(port);
+	int ret = 0;
 
 	/* Based on code from acm.c and others */
 	switch (cmd) {
-
 	case TIOCGSERIAL: /* gets serial port data */
 		return get_serial_info(port,
 					(struct serial_struct __user *) arg);
-
 	case TIOCSSERIAL: /* sets serial port data */
 		return set_serial_info(tty, port,
 					(struct serial_struct __user *) arg);
 	case TIOCSERGETLSR:
 		return get_lsr_info(port, (struct serial_struct __user *)arg);
+		break;
+	case TCFLSH:
+		switch(arg) {
+		case TCIFLUSH:
+			ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
+			FTDI_SIO_RESET_REQUEST, FTDI_SIO_RESET_REQUEST_TYPE,
+			FTDI_SIO_RESET_PURGE_RX,
+			priv->interface, NULL, 0, WDR_TIMEOUT);
+			if(ret < 0)
+				return ret;
+			return 0;
+		case TCOFLUSH:
+			ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
+			FTDI_SIO_RESET_REQUEST, FTDI_SIO_RESET_REQUEST_TYPE,
+			FTDI_SIO_RESET_PURGE_TX,
+			priv->interface, NULL, 0, WDR_TIMEOUT);
+			if(ret < 0)
+				return ret;
+			return 0;
+		case TCIOFLUSH:
+			ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
+			FTDI_SIO_RESET_REQUEST, FTDI_SIO_RESET_REQUEST_TYPE,
+			FTDI_SIO_RESET_PURGE_RX,
+			priv->interface, NULL, 0, WDR_TIMEOUT);
+			if(ret < 0)
+				return ret;
+			ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
+			FTDI_SIO_RESET_REQUEST, FTDI_SIO_RESET_REQUEST_TYPE,
+			FTDI_SIO_RESET_PURGE_TX,
+			priv->interface, NULL, 0, WDR_TIMEOUT);
+			if(ret < 0)
+				return ret;
+			return 0;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;

@@ -64,8 +64,8 @@
 #define FTDI_SIO_RESET_REQUEST FTDI_SIO_RESET
 #define FTDI_SIO_RESET_REQUEST_TYPE 0x40
 #define FTDI_SIO_RESET_SIO 0
-#define FTDI_SIO_RESET_PURGE_RX 1
-#define FTDI_SIO_RESET_PURGE_TX 2
+#define FTDI_SIO_RESET_PURGE_TX 1 /*Eric corrected the definition on 2020/05/09*/
+#define FTDI_SIO_RESET_PURGE_RX 2
 
 /*
  * BmRequestType:  0100 0000B
