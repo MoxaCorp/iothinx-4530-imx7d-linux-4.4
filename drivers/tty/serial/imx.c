@@ -990,6 +990,14 @@ static void imx_break_ctl(struct uart_port *port, int break_state)
 
 	temp = readl(sport->port.membase + UCR1) & ~UCR1_SNDBRK;
 
+	if (sport->mode == RS485_2WIRE_MODE)
+	{
+		if (break_state != 0)
+			imx_moxa_uart485_tx_active((unsigned long)sport);
+		else
+			imx_moxa_uart485_tx_inactive((unsigned long)sport);
+	}
+
 	if (break_state != 0)
 		temp |= UCR1_SNDBRK;
 
