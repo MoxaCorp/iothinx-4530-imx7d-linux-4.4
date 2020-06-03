@@ -2185,8 +2185,10 @@ static int serial_imx_probe(struct platform_device *pdev)
 		if (IS_ERR(sport->gpios))
 			return PTR_ERR(sport->gpios);
 
-		if(sport->rs485_p1)
+		if (sport->rs485_p1) {
 			gshare_gpios = sport->gpios;
+			imx_moxa_ioThinx4530_uart_rs232_mode(sport);
+		}
 	}else {
 		sport->gpios = mctrl_gpio_init(&sport->port, 0);
 		if (IS_ERR(sport->gpios))
